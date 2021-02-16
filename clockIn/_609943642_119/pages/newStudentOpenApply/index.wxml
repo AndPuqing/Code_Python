@@ -1,0 +1,24 @@
+<view>
+    <view class="title">2020级本科新生入学注册</view>
+    <form bindsubmit="save">
+        <van-cell-group>
+            <van-cell isLink required bind:click="toggleSheet" data-type="collges" title="学院" value="{{collge?collge:'请选择学院'}}"></van-cell>
+            <van-cell isLink required bind:click="toggleSheet" data-type="types" title="本科类型" value="{{student_type?student_type:'请选择类型'}}"></van-cell>
+            <van-field required bind:change="getdata" border="{{true}}" customStyle="font-size:32rpx" label="专业" placeholder="请输入您的专业" type="text"></van-field>
+        </van-cell-group>
+        <view style="font-size:30rpx;color:red;padding:15rpx 30rpx">提示：*为必填项，请如实填写，请确认您已经成功领取广西健康码</view>
+        <view bindtap="seeBook" style="margin:0 30rpx">
+            <van-checkbox-group bind:change="radio2Change" value="{{radio2}}">
+                <van-checkbox checkedColor="#07c160" name="1">
+                    <view style="font-size:32rpx">已详细阅读<text catchtap="goDetail" style="color:blue">《桂林电子科技大学学生返校承诺书》</text>，并承诺遵守规定。</view>
+                </van-checkbox>
+            </van-checkbox-group>
+        </view>
+        <view class="panel-btn ">
+            <button class="btn" formType="submit">申请注册</button>
+        </view>
+    </form>
+</view>
+<van-action-sheet actions="{{actions}}" bind:close="toggle" bind:select="onSelect" closeOnClickOverlay="{{true}}" show="{{show}}" zIndex="{{10000}}"></van-action-sheet>
+<van-dialog id="van-dialog"></van-dialog>
+<van-toast id="van-toast"></van-toast>

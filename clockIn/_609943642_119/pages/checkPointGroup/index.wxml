@@ -1,0 +1,27 @@
+<view>
+    <view class="title">基本信息</view>
+    <view>
+        <van-cell-group>
+            <van-cell title="名称" value="{{detail.group.name}}"></van-cell>
+            <van-cell title="类型" value="{{CommunityCheckpointTypeEnums[detail.checkpoint_type]}}"></van-cell>
+            <van-cell title="通行方式" value="扫码即过"></van-cell>
+            <van-cell isLink bind:click="goUser" title="管理员">
+                <view class="flex" style="justify-content: flex-end;">
+                    <view>
+                        <image src="{{item.user.photo}}" style="height:50rpx;width:50rpx" wx:if="{{item.user.photo}}" wx:for="{{users}}" wx:key="index"></image>
+                    </view>
+                    <view>{{detail.group.ucount}}人</view>
+                </view>
+            </van-cell>
+        </van-cell-group>
+    </view>
+    <view style="margin:30rpx">
+        <van-button plain bindtap="goUrl" size="large" type="primary">查看二维码</van-button>
+    </view>
+    <view class="panel" wx:for="{{info}}" wx:key="index">
+        <view class="panel-title">{{item.title}}</view>
+        <view class="panel-chart">
+            <ff-canvas canvasId="column" id="opts{{index}}" opts="{{opts1}}"></ff-canvas>
+        </view>
+    </view>
+</view>

@@ -1,0 +1,29 @@
+<view>
+    <view style="color:#888;padding-top:30rpx;font-size:30rpx">
+        <van-tabs active="{{appShow}}" bind:change="changeApp" color="#09BA07" type="card">
+            <van-tab tabClass="tabclass" title="花江校区"></van-tab>
+            <van-tab tabClass="tabclass" title="金鸡岭校区"></van-tab>
+        </van-tabs>
+    </view>
+    <view style="margin:30rpx;margin-bottom:0">
+        <van-notice-bar leftIcon="volume-o" text="提示：请尽量到人数较少的餐厅就餐"></van-notice-bar>
+    </view>
+    <view style="text-align:center;padding:30rpx" wx:if="{{list&&list.length==0}}">暂无食堂，请尝试下拉刷新</view>
+    <view style="margin:30rpx">
+        <van-cell useLabelSlot titleWidth="350rpx" wx:for="{{list}}" wx:key="index">
+            <view class="title" slot="title">{{item.group.name}}</view>
+            <view slot="label">
+                <view>{{item.lastTxt}}</view>
+            </view>
+            <view class="flex">
+                <view class="flex1" style="font-size:32rpx;color:#000;text-align:center">{{item.flow.max_capacity}}
+							<view>容量</view>
+                </view>
+                <view class="flex1 num {{item.flow.max_capacity<item.staying_count?'over':item.staying_count/item.flow.max_capacity>0.7?'warn':'nomal'}}">{{item.staying_count||0}}
+							<view style="font-size:32rpx;font-weight:100rpx;color:#000">当前人数</view>
+                </view>
+            </view>
+        </van-cell>
+    </view>
+</view>
+<van-toast id="van-toast"></van-toast>

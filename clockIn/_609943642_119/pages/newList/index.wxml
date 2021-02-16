@@ -1,0 +1,17 @@
+<view>
+    <view style="padding:30rpx">
+        <view bindtap="goDetail" class="panel-body_news" data-item="{{item}}" style="display:flex" wx:for="{{newslist}}" wx:key="{{index}}">
+            <view wx:if="{{item.icon}}">
+                <image mode="aspectFill" src="{{item.icon}}?x-oss-process=image/resize,m_fixed,h_105,w_105" style="height:100rpx;width:100rpx"></image>
+            </view>
+            <view style="flex:1 ;margin-left:20rpx;line-height:50rpx">
+                <view class="font34 van-multi-ellipsis--l1 ">{{item.title}}</view>
+                <view style="font-size:22rpx">
+                    <text class="iconfont icon-iconfont74" style="margin-right:8rpx"></text>{{item.createdTime}}</view>
+            </view>
+        </view>
+        <view bindtap="getNewsList" class="text-center font28" style="color:#3798f9;margin-top:30rpx;text-align:center" wx:if="{{HasNextPage}}">点击查看等多</view>
+        <view class="text-center font28" style="margin-top:30rpx" wx:if="{{!HasNextPage&&!loading}}">已经到底了～～</view>
+    </view>
+    <van-toast id="van-toast"></van-toast>
+</view>

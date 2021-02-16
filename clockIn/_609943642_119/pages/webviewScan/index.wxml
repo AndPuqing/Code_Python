@@ -1,0 +1,1 @@
+<web-view src="{{host}}/yqfk/#/scan?id={{id}}"></web-view>

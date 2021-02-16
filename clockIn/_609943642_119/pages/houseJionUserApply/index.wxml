@@ -1,0 +1,29 @@
+<view>
+    <view class="filter1">
+        <van-search bind:change="searchChange" placeholder="请输入搜索关键词"></van-search>
+        <van-dropdown-menu activeColor="#ee0a24">
+            <van-dropdown-item bind:change="menuChange" options="{{option1}}" value="{{value1}}"></van-dropdown-item>
+            <van-dropdown-item bind:change="menuChange2" options="{{option2}}" value="{{value2}}"></van-dropdown-item>
+        </van-dropdown-menu>
+    </view>
+    <view>
+        <van-cell-group>
+            <van-cell useLabelSlot bindtap="goDetail" data-id="{{item.id}}" title="{{item.student_id}} {{item.name}}" titleClass="title" titleWidth="500rpx" wx:for="{{list}}" wx:key="index">
+                <view catchtap="toggle" data-id="{{item.id}}" data-state="{{item.state}}" style="height:100%;display:flex;align-items:center">
+                    <view style="width:100%;text-align:right;color:{{item.state==1?'green':'red'}}">{{CommunityHouseholdApplicationStateEnums[item.state]}}
+							<van-icon name="arrow"></van-icon>
+                    </view>
+                </view>
+                <view slot="label" style="font-size:28rpx">
+                    <view>班级：{{item.group.name}} {{item.building.name}} {{item.household.no}}</view>
+                    <view wx:if="{{item.desc}}">说明：{{item.desc}}</view>
+                    <view style="font-size:30rpx">申请时间：{{item.createdTxt}}</view>
+                </view>
+            </van-cell>
+        </van-cell-group>
+    </view>
+    <view bindtap="getMore" style="text-align:center;border-top:1rpx solid #f2f2f2;padding:30rpx;background:#fff" wx:if="{{hasmore}}">加载更多</view>
+</view>
+<view style="padding:30rpx;text-align:center" wx:if="{{list.length==0}}">暂无审核数据</view>
+<van-action-sheet closeOnClickOverlay actions="{{actions}}" bind:cancel="sheetToggle" bind:close="sheetToggle" bind:select="onselect" cancelText="取消" show="{{show}}"></van-action-sheet>
+<van-toast id="van-toast"></van-toast>

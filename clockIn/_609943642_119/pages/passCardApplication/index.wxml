@@ -1,0 +1,95 @@
+<view>
+    <form bindsubmit="save">
+        <view class="title">个人信息</view>
+        <view>
+            <van-cell-group>
+                <van-field clearable border="{{true}}" label="真实姓名" name="name" placeholder="请输入您的姓名" type="text" value="{{self.name}}"></van-field>
+                <van-field clearable border="{{true}}" label="身份证号" name="idcard" placeholder="请输入您的身份证号" type="text" value="{{self.idcard}}"></van-field>
+                <van-cell isLink bind:click="toggleArea" title="返程目的地" value="{{areaActive.name}}"></van-cell>
+                <van-field clearable border="{{true}}" label="单位名称" name="company" placeholder="请输入您的单位名称" type="text"></van-field>
+                <van-field clearable border="{{true}}" label="抵达后住宿" name="address" placeholder="请输入抵达后详细地址" type="text"></van-field>
+                <van-cell isLink bind:click="toggleRelation" data-type="relation" data-types="relations" title="与屋主关系" value="{{relation.name}}"></van-cell>
+                <van-cell isLink bind:click="toggleRelation" data-type="purpose" data-types="purposes" title="回来的目的" value="{{purpose.name}}"></van-cell>
+                <van-field clearable border="{{true}}" label="补充说明" name="desc" placeholder="请输入您的说明" type="text"></van-field>
+            </van-cell-group>
+        </view>
+        <view class="title">行程信息</view>
+        <view>
+            <van-cell isLink bind:click="toggleNowArea" data-model="location" data-type="start" title="现所在城市" value="{{start.location}}"></van-cell>
+            <van-cell isLink bind:click="toggleBottomPopup" title="预计到达时间" value="{{date}}"></van-cell>
+            <van-cell isLink bind:click="toggleRelation" data-type="type" data-types="types" title="交通方式" value="{{type.name}}"></van-cell>
+            <van-field border="{{true}}" label="车次" name="train_number" placeholder="请输入车次" type="text"></van-field>
+            <van-field border="{{true}}" label="座位" name="seat" placeholder="请输出您的座位" type="text"></van-field>
+        </view>
+        <view class="title">同行人信息</view>
+        <view style="background:#fff">
+            <van-cell useLabelSlot value="{{item.relationship}}" wx:for="{{other}}" wx:key="index">
+                <view class="flex" slot="title">
+                    <van-icon bindtap="deleteItem" color="red" data-index="{{index}}" name="clear" size="40rpx"></van-icon>
+                    <view class="flex1" style="margin-left:20rpx">
+                        <view style="font-size:34rpx">{{item.name}}</view>
+                        <view style="font-size:30rpx;color:#666">{{item.phone}}</view>
+                    </view>
+                </view>
+            </van-cell>
+            <view style="padding:30rpx">
+                <van-button bindtap="toggleUser" size="large">添加</van-button>
+            </view>
+        </view>
+        <view bindtap="seeBook" style="margin:30rpx">
+            <van-radio-group bind:change="radioChange" value="{{radio}}">
+                <van-radio name="1">我已阅读并同意遵守《承诺书》</van-radio>
+            </van-radio-group>
+        </view>
+        <view class="panel-btn">
+            <button class="btn" formType="submit">提交</button>
+        </view>
+    </form>
+</view>
+<van-dialog useSlot bind:close="toggleUser" show="{{vanshow}}" showConfirmButton="{{false}}" title="新增同行人">
+    <view style="margin:20rpx">
+        <van-field bind:change="changename" label="真实姓名" placeholder="请输入真实姓名" value="{{name}}"></van-field>
+        <van-field bind:change="changetel" label="身份证号" placeholder="请输入身份证号" value="{{phone}}"></van-field>
+        <van-cell isLink bind:click="toggleRelationSheet" title="亲属关系" value="{{relationship}}"></van-cell>
+        <view style="display:flex;text-align:center;padding:20rpx 0">
+            <van-button bind:click="toggleUser" customClass="btn1" data-type="close" style="flex:1" type="danger">取 消</van-button>
+            <van-button bind:click="adduserItem" customClass="btn1" style="flex:1" type="primary">提 交</van-button>
+        </view>
+    </view>
+</van-dialog>
+<van-dialog useSlot bind:confirm="seeBook" show="{{bookshow}}" title="居家隔离承诺书">
+    <view>
+        <view style="height: 400rpx;overflow-y: auto;padding: 30rpx 50rpx;font-size: 34rpx;color: #888;line-height: 70rpx; ">
+            <view>
+                <view style="text-indent:30rpx">目前，横县已启动重大突发公共卫生事件一级响应机制，实行最严格的科学防控措施。为配合本县新冠肺炎疫情防控工作，本人郑重承诺: </view>
+                <view>1.本人进入横县后，将主动向所在社区（村委）报备个人信息，并严格执行14日居家隔离，不擅自外出，谢绝会客;</view>
+                <view>2.积极配合医务人员进行每日上、下午各一次体温测量并做好记录，如实回答健康询问;</view>
+                <view>3.在家出现发热、咳嗽、气促等急性呼吸道症状，立即电话联系指定工作人员，由所在辖区落实专用车辆送至指定发热门诊，并主动配合开展相关工作;</view>
+                <view>4.居家隔离期间，做好个人及共同生活人员的防护；</view>
+                <view>5.对有关信息不擅自传播，不瞒报、不谎报、不误报。</view>
+            </view>
+        </view>
+    </view>
+</van-dialog>
+<van-dialog useSlot bind:confirm="infoToggle" show="{{infoShow}}" title="人员登记提示">
+    <view>
+        <view style="height: 400rpx;overflow-y: auto;padding: 30rpx 50rpx;font-size: 34rpx;color: #888;line-height: 70rpx; ">
+            <view>
+                <view style="text-indent:30rpx">根据《中华人民共和国传染病防治法》《中华人民共和国突发事件应对法》《突发公共卫生事件应急条例》等法律规定，在疫情防控期间，进入横县人员须主动登记个人相关信息，配合进行防疫检查。为提高登记检查效率，方便来横县人员和车辆快速通过防疫检查站，来横县人员须关注横县数字茉莉微信公众号，如实填报个人有关信息及出行方式、来源地、目的地等必要信息，提交审核成功后保存自带二维码截图，在进入横县境内防疫检查站时，主动出示给工作人员查验，身份验证、体温检测正常后方可快速通过。</view>
+            </view>
+        </view>
+    </view>
+</van-dialog>
+<van-popup bind:close="toggleArea" customClass="bottom" position="bottom" show="{{areaShow}}">
+    <van-picker showToolbar bind:cancel="toggleArea" bind:change="onChange" bind:confirm="chooseArea" columns="{{columns}}" title="请选择返程目的地"></van-picker>
+</van-popup>
+<van-popup bind:close="toggleNowArea" customClass="bottom" data-index="1" position="bottom" show="{{nowAreaShow}}">
+    <van-area areaList="{{nowarea}}" bind:cancel="toggleNowArea" bind:confirm="areaSelect" value="450101"></van-area>
+</van-popup>
+<van-action-sheet actions="{{actions}}" bind:close="toggle" bind:select="select" closeOnClickOverlay="{{true}}" show="{{sheetshow}}"></van-action-sheet>
+<van-dialog id="van-dialog"></van-dialog>
+<van-toast id="van-toast"></van-toast>
+<van-popup bind:close="toggleBottomPopup" customClass="bottom" data-index="1" position="bottom" show="{{popShow}}">
+    <van-datetime-picker bind:cancel="toggleBottomPopup" bind:confirm="onChange" minDate="{{mixdate}}" title="请选择时间" type="date" value="{{currentDate1}}"></van-datetime-picker>
+</van-popup>
+<van-action-sheet actions="{{otherrelations}}" bind:close="toggleRelationSheet" bind:select="onrelationSelect" closeOnClickOverlay="{{true}}" show="{{relationshow}}" zIndex="{{10000}}"></van-action-sheet>

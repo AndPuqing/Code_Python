@@ -1,0 +1,15 @@
+<view>
+    <view class="panel-title">手机认证类型选择</view>
+    <view class="panel-type">
+        <van-button bindgetphonenumber="getPhoneNumber" hoverClass="hover" openType="getPhoneNumber" size="large" type="primary">使用微信手机号码验证</van-button>
+    </view>
+    <view class="panel-type">
+        <van-button bindtap="goPhoneLog" hoverClass="hover" size="large" type="primary">使用其他手机号码验证</van-button>
+        <van-toast id="van-toast"></van-toast>
+    </view>
+    <view style="position:fixed;bottom:30rpx;margin:30rpx;color:#666;font-size:32rpx">
+    *绑定手机只对用户进行实名认证需要，我们会对您的个人隐私进行保护。
+  </view>
+    <loginCheck></loginCheck>
+</view>
+<van-dialog id="van-dialog"></van-dialog>

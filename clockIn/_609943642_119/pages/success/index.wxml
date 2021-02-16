@@ -1,0 +1,7 @@
+<view style="text-align:center;margin:140rpx 30rpx">
+    <van-icon color="#09BA07" name="checked" size="120rpx"></van-icon>
+    <view style="font-size:40rpx">操作成功</view>
+    <view style="margin:40rpx 0">
+        <van-button bind:click="goback" size="large" type="primary">返回</van-button>
+    </view>
+</view>

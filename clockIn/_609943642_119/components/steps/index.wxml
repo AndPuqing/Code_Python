@@ -1,0 +1,27 @@
+<view class="panel" wx:if="{{steps.length>0}}">
+    <view class="panel-wigdet">
+        <view class="panel-title">做任务，领畅行证</view>
+        <view style="padding:30rpx 0;font-size:38rpx">
+            <view class="custom-class van-steps van-steps--{{direction}}">
+                <view class="van-step__wrapper">
+                    <view class="van-step van-hairline van-step--{{direction}} van-step--finish" style="{{width?'width:'+width+'px':''}} ;margin-left:16rpx;" wx:if="{{item.url}}" wx:for="{{steps}}" wx:key="index">
+                        <view style="margin-left:80rpx">
+                            <view style="font-size:36rpx;font-weight:600">{{item.title}}</view>
+                            <view style="color:#666;font-size:26rpx;display:flex;margin-top:10rpx">
+                                <view style="flex:1"> {{item.subtitle}}</view>
+                                <van-button bind:click="gourl" customClass="vanbtn" data-url="{{item.url}}" size="mini" wx:if="{{item.url}}">{{item.btnName}}</van-button>
+                            </view>
+                        </view>
+                        <view class="van-step__circle-container">
+                            <view class="van-step__circle van-step_status">
+                                <van-icon color="#108ee9" customClass="van-step_icon" name="cross" size="40rpx" wx:if="{{!item.task}}"></van-icon>
+                                <van-icon color="#108ee9" customClass="van-step_icon" name="success" size="40rpx" wx:if="{{item.task}}"></van-icon>
+                            </view>
+                        </view>
+                        <view class="van-step__line" wx:if="{{index!==steps.length-1}}"></view>
+                    </view>
+                </view>
+            </view>
+        </view>
+    </view>
+</view>

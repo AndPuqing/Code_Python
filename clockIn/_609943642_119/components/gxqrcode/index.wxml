@@ -1,0 +1,41 @@
+<view class="flex">
+    <view bindtap="toggleSelect" style="text-align:left;font-size:36rpx;font-weight:bold" wx:if="{{person.xm}}">{{person.xm}}的健康码
+	</view>
+    <view bindtap="toggleSelect" class="flex1" style="font-size:30rpx;color:#09BA07;text-align:left;line-height:50rpx" wx:if="{{members.length>1&&ismember&&imagePath}}">切换
+		<van-icon customStyle="font-weight:bold" name="arrow-down"></van-icon>
+    </view>
+    <view class="flex1" style="color:#09BA07;text-align:right;" wx:if="{{bind&&edit&&imagePath&&dataShow}}">
+        <text catchtap="gochangeData" data-id="{{active.uid}}">修改信息</text>
+    </view>
+</view>
+<view style="text-align:left;font-size:32rpx;color:#999" wx:if="{{person.zjhm}}">证件号码：{{person.zjhm}}</view>
+<view style="height:{{size}}rpx;display: flex;justify-content: center;">
+    <image bindtap="previewImg" class="code-body_img" mode="scaleToFill" src="{{imagePath}}" style="width:{{size}}rpx;height:{{size}}rpx;" wx:if="{{imagePath&&bind&&dataShow}}"></image>
+    <view style="width:550rpx;background:#f2f2f2;display:flex;align-items:center;" wx:if="{{!bind&&dataShow}}">
+        <view style="width:100%;line-height: 90rpx;">
+            <view>您的账号还未绑定广西健康码</view>
+            <van-button catch:tap="goSigin" size="small" type="primary">前往绑定</van-button>
+        </view>
+    </view>
+    <view style="width:550rpx;background:#f2f2f2;display:flex;align-items:center;" wx:if="{{!dataShow}}">
+        <view style="width:100%;line-height: 90rpx;">
+            <view>点击按钮刷新</view>
+            <van-button catch:tap="getCode" size="small" type="primary">刷新</van-button>
+        </view>
+    </view>
+</view>
+<view class="canvas-box">
+    <canvas canvasId="mycanvas" style="width:686rpx;height:686rpx;background:#f1f1f1;" wx:if="{{canvasHidden}}"></canvas>
+</view>
+<view style="font-size:30rpx;color#888;margin-top:15rpx" wx:if="{{source.type&&source.type!=3&&source.reason}}">原因：{{source.reason}}</view>
+<view class="quaranrtine" wx:if="{{bind&&quarantine&&dataShow}}">正在隔离，隔离至{{quarantine.endtxt}}</view>
+<view style="font-size:40rpx;font-weight:bold;color:{{CommunityHealthCodeLevelEnums[type]}};" wx:if="{{!quarantine.id}}">{{colorText[type]}}</view>
+<view style="text-align:center;font-size:32rpx;color:#999" wx:if="{{update}}">更新时间：{{update}}</view>
+<view style="font-size:28rpx;color#666;margin-top:30rpx" wx:if="{{source.dataSource}}">
+    <view>依托全国一体化政务服务平台</view>
+    <view>实现跨省（区、市）数据共享和互通互认</view>
+    <view>数据来源：{{source.dataSource}}</view>
+</view>
+<van-dialog id="van-dialog"></van-dialog>
+<van-toast id="van-toast"></van-toast>
+<van-action-sheet actions="{{members}}" bind:click-overlay="toggleSelect" bind:select="select" show="{{sheetShow}}"></van-action-sheet>

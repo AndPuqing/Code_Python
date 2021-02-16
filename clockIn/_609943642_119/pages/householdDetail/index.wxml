@@ -1,0 +1,93 @@
+<view>
+    <view class="title">基本信息</view>
+    <view class="panel">
+        <van-cell-group>
+            <van-cell title="名称" value="{{detail.name}}"></van-cell>
+            <van-cell isLink bind:click="goUrl" data-url="/pages/householdGroupDetail/index?id={{detail.group.id}}" title="小区" value="{{detail.group.name}}"></van-cell>
+            <van-cell title="负责人">
+                <block wx:for="{{detail.admins}}" wx:key="index">
+					{{item.name}} <text wx:if="{{index>0}}">,</text>
+                </block>
+            </van-cell>
+            <van-cell isLink bind:click="goUrl" data-url="/pages/householdAddAdminUser/index?id={{detail.id}}" title="管理员" value="{{detail.users.length||0}}人"></van-cell>
+        </van-cell-group>
+    </view>
+    <view class="title">统计信息</view>
+    <view class="panel">
+        <view>
+            <van-grid border="{{false}}" center="{{true}}" columnNum="3">
+                <van-grid-item>
+                    <view class="text-center" slot="text">
+                        <view>户数</view>
+                        <view style="font-size:32rpx;color:#000">{{detail.data.household_count||0}}</view>
+                        <view>户</view>
+                    </view>
+                </van-grid-item>
+                <van-grid-item>
+                    <view class="text-center" slot="text">
+                        <view>人数</view>
+                        <view style="font-size:32rpx;color:#000">{{detail.data.person_count||0}}</view>
+                        <view>人</view>
+                    </view>
+                </van-grid-item>
+                <van-grid-item>
+                    <view class="text-center" slot="text">
+                        <view>有效通行证</view>
+                        <view style="font-size:32rpx;color:#000">{{detail.data.pass_count||0}}</view>
+                        <view>个</view>
+                    </view>
+                </van-grid-item>
+                <van-grid-item>
+                    <view class="text-center" slot="text">
+                        <view>加入待审核</view>
+                        <view style="font-size:32rpx;color:#000">{{detail.data.apply_in||0}}</view>
+                        <view>人</view>
+                    </view>
+                </van-grid-item>
+                <van-grid-item>
+                    <view class="text-center" slot="text">
+                        <view>通行证待审</view>
+                        <view style="font-size:32rpx;color:#000">{{detail.data.apply_pass||0}}</view>
+                        <view>人</view>
+                    </view>
+                </van-grid-item>
+                <van-grid-item>
+                    <view class="text-center" slot="text">
+                        <view>健康未上报</view>
+                        <view style="font-size:32rpx;color:#000">{{detail.data.health_unreport||0}}</view>
+                        <view>人</view>
+                    </view>
+                </van-grid-item>
+                <van-grid-item>
+                    <view class="text-center" slot="text">
+                        <view>有过接触</view>
+                        <view style="font-size:32rpx;color:#000">{{detail.data.touch||0}}</view>
+                        <view>人</view>
+                    </view>
+                </van-grid-item>
+                <van-grid-item>
+                    <view class="text-center" slot="text">
+                        <view>身体不正常</view>
+                        <view style="font-size:32rpx;color:#000">{{detail.data.sick||0}}</view>
+                        <view>人</view>
+                    </view>
+                </van-grid-item>
+                <van-grid-item>
+                    <view class="text-center" slot="text">
+                        <view>隔离期</view>
+                        <view style="font-size:32rpx;color:#000">{{detail.data.isolat||0}}</view>
+                        <view>人</view>
+                    </view>
+                </van-grid-item>
+            </van-grid>
+        </view>
+    </view>
+    <view class="panel" wx:if="{{info.length>0}}">
+        <view style="padding: 20rpx;border-bottom: 1rpx solid #108ee9;color: #108ee9;text-align: center;" wx:if="{{detail.data.unit_names[0]}}">{{detail.data.unit_names[0]}}</view>
+        <view>
+            <van-cell-group>
+                <van-cell title="{{item.name}}" value="{{members.length||0}}人" wx:for="{{info}}" wx:key="index"></van-cell>
+            </van-cell-group>
+        </view>
+    </view>
+</view>

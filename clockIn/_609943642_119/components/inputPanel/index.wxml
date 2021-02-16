@@ -1,0 +1,70 @@
+<view class="inputPanel">
+    <view class="inputPanel-title flex" wx:if="{{config.title}}">
+        <view class="flex1">{{config.title}}</view>
+        <view bindtap="goAppy" data-passTag="{{config.passTag}}" wx:if="{{config.passTag!=0&&!house}}">申请加入</view>
+    </view>
+    <view>
+        <view wx:for="{{flags}}" wx:key="index">
+            <view style="font-size:32rpx">{{item.title}}</view>
+            <radio-group bind:change="onRadiohealthChange" data-index="{{pIndex}}" data-item="{{p}}" data-parent-index="{{index}}">
+                <view class="wux-filterbar__groups">
+                    <block wx:for="{{item.tags}}" wx:for-item="g" wx:key="index">
+                        <view class="wux-filterbar__group">
+                            <radio checked="{{item.value==g.k}}" class="wux-filterbar__radio" value="{{g.k}}"></radio>
+                            <view class="wux-filterbar__btn {{g.k==item.value?'wux-filterbar__btn--checked':''}}">{{g.v}}</view>
+                        </view>
+                        <view class="wux-filterbar__group" wx:if="{{g.k==-2147483648}}">
+                            <van-stepper bind:change="stepChange" decimalLength="{{1}}" step="0.1" value="{{temp}}"></van-stepper>
+                        </view>
+                    </block>
+                </view>
+            </radio-group>
+        </view>
+    </view>
+    <view wx:if="{{parent.type!=2020020703}}">
+        <view wx:if="{{members.length>0}}">
+            <view style="font-size:32rpx;padding-top:20rpx">同行人员</view>
+            <checkbox-group bind:change="onMemberChange">
+                <view class="wux-filterbar__groups">
+                    <view class="wux-filterbar__group" wx:for="{{members}}" wx:key="index">
+                        <checkbox checked="{{item.check}}" class="wux-filterbar__check" value="{{index}}"></checkbox>
+                        <view class="wux-filterbar__btn {{item.check?'wux-filterbar__btn--checked':''}}">{{item.name}}</view>
+                    </view>
+                </view>
+            </checkbox-group>
+        </view>
+    </view>
+    <view wx:if="{{config.vehicleTag}}">
+        <view style="font-size:32rpx;padding-top:20rpx">车牌号</view>
+        <view wx:if="{{group.last_plate}}">
+            <checkbox-group bind:change="onPlateChange">
+                <view class="wux-filterbar__groups">
+                    <view class="wux-filterbar__group">
+                        <checkbox checked="{{inputplate==group.last_plate}}" class="wux-filterbar__check" value="{{group.last_plate}}"></checkbox>
+                        <view class="wux-filterbar__btn {{group.last_plate==inputplate?'wux-filterbar__btn--checked':''}}">{{group.last_plate}}</view>
+                    </view>
+                </view>
+            </checkbox-group>
+        </view>
+        <view class="">
+            <van-field bind:change="getTrainnumber" border="{{true}}" name="train_number" placeholder="请输入您的车牌" type="text" value="{{inputplate}}"></van-field>
+        </view>
+    </view>
+    <view class="flex inputPanel-btn">
+        <view class="flex1">
+            <van-button plain bind:click="submit" customClass="btn" data-isin="true" type="info">
+                <view class="flex">
+                    <van-icon name="arrow" size="40rpx"></van-icon>入场
+				</view>
+            </van-button>
+        </view>
+        <view class="flex1">
+            <van-button plain bind:click="submit" customClass="btn" data-isin="false" type="info">
+                <view class="flex">出场
+					<van-icon name="arrow-left" size="40rpx"></van-icon>
+                </view>
+            </van-button>
+        </view>
+    </view>
+</view>
+<van-toast id="van-toast"></van-toast>

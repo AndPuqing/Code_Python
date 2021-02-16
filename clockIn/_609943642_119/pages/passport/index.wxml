@@ -1,0 +1,55 @@
+<view class="card" wx:if="{{card&&card.id}}">
+    <view class="card-data">
+        <van-cell-group title="基本信息">
+            <van-cell title="卡片编号" value="{{no}}"></van-cell>
+            <van-cell title="持卡姓名" wx:if="{{card.user.name}}">
+                <view>
+                    <image src="{{card.user.photo}}" style="width:50rpx;height:50rpx;vertical-align: middle;margin-right:10rpx"></image>{{card.user.name}}
+			</view>
+            </van-cell>
+            <van-cell title="住址" titleWidth="120rpx" value="{{card.household.group.name}} {{card.household.building.name}} {{card.household.building.no}} {{card.household.unit_name}} {{card.household.name?card.household.name:card.household.no}}"></van-cell>
+            <van-cell title="通行证类型" value="{{CommunityPassTypeEnums[card.type]}}"></van-cell>
+            <van-cell title="通行证限制类型" value="{{CommunityPassLimitTypeEnums[card.limit_type]}}"></van-cell>
+            <van-cell title="登记车牌号" value="{{card.vehicle.plate}}" wx:if="{{card.vehicle.plate}}"></van-cell>
+        </van-cell-group>
+    </view>
+    <view style="">
+        <passCard minititle="{{card.issuedTxt}}" slot="title" subtitle="{{card.text}}" title="{{card.name}}"></passCard>
+    </view>
+    <view class="card-btn">
+        <van-button bindtap="goUseCard" size="large" type="primary" wx:if="{{admins}}">使用</van-button>
+        <van-button bindtap="unBindCard" customClass="btn" size="large" style="margin-top:30rpx" wx:if="{{card.user.id==self.id||admins}}">解除绑定</van-button>
+    </view>
+</view>
+<view style="margin-top:100rpx" wx:if="{{!passvalid&&!card.id}}">
+    <view class="code-check">
+        <view>
+            <van-icon color="#ff976a" name="info" size="100rpx"></van-icon>
+        </view>
+        <view class="code-check_title">请勿乱扫他人的通行码</view>
+        <view class="code-check_subtitle">我们非常注重保护用户的隐私，您不是工作人员，我们不会显示相关信息！</view>
+    </view>
+    <view class="flex" style="text-align:center;margin:30rpx">
+        <view class="flex1">
+            <van-button bindtap="goback" customClass="btn" size="large" type="default">返回首页</van-button>
+        </view>
+    </view>
+</view>
+<view wx:if="{{passvalid&&!card.id}}">
+    <view style="padding:30rpx;text-align:center;font-size:40rpx">卡片编号:{{no}}</view>
+    <view style="color:#888;padding:0 30rpx;font-size:28rpx">提示：该卡片未绑定通行证，您可以通过绑定你的通行证后使用</view>
+    <view bindtap="goBindCard" class="card-edit" data-type="1" hoverClass="hover">
+        <view>
+            <van-icon name="plus" size="50rpx"></van-icon>
+            <view>点击本户绑定通行证</view>
+        </view>
+    </view>
+    <view bindtap="goBindCard" class="card-edit" data-type="2" hoverClass="hover">
+        <view>
+            <van-icon name="plus" size="50rpx"></van-icon>
+            <view>点击帮助他人绑定通行证</view>
+        </view>
+    </view>
+</view>
+<van-toast id="van-toast"></van-toast>
+<van-dialog id="van-dialog"></van-dialog>

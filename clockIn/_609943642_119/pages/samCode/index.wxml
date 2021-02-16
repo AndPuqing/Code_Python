@@ -1,0 +1,81 @@
+<view class="container">
+    <view wx:if="{{cms}}">
+        <van-notice-bar leftIcon="volume-o" text="{{cms}}"></van-notice-bar>
+    </view>
+    <view class="code">
+        <view style="color:#888;padding-top:30rpx;font-size:30rpx">
+            <van-tabs active="{{appShow}}" bind:change="changeApp" color="#09BA07" type="card">
+                <van-tab tabClass="tabclass" title="{{key=='ncov'?'畅行茉莉':'桂电畅行'}}健康码"></van-tab>
+                <van-tab tabClass="tabclass" title="广西健康码"></van-tab>
+            </van-tabs>
+        </view>
+        <view>
+            <view class="code-body">
+                <qrcode bind:change="qrChange" show="{{show}}" size="550" wx:if="{{!appShow}}"></qrcode>
+                <gxqrcode bind:change="gxqrcodeChange" color="{{quarantine.id?'red':''}}" ismember="{{true}}" show="{{show}}" size="550" wx:if="{{appShow}}"></gxqrcode>
+            </view>
+            <view class="flex" style="margin-top:20rpx;height:60rpx">
+                <view class="flex into">
+                    <view class="block" style="margin-right:8rpx; background-color:#0c0"></view>
+                    <view>健康可通行</view>
+                </view>
+                <view class="flex into">
+                    <view class="block" style="margin-right:8rpx;background-color:#f90"></view>
+                    <view>健康异常</view>
+                </view>
+                <view class="flex into">
+                    <view class="block" style="margin-right:8rpx;background-color:#f00"></view>
+                    <view>{{appShow?'不可通行':'居家隔离期'}}</view>
+                </view>
+            </view>
+        </view>
+        <view style="text-align:center;padding:30rpx" wx:if="{{appShow}}">
+            <van-button bind:click="gotrip" size="large" type="primary">我的行程卡</van-button>
+        </view>
+        <view style="text-align:center;padding:30rpx" wx:if="{{!appShow}}">
+            <van-button bind:click="goAddHealth" size="large" type="primary">健康打卡领取绿色畅行码</van-button>
+        </view>
+    </view>
+</view>
+<view style="margin:30rpx;background:#fff;margin-top:0" wx:if="{{appShow}}">
+    <view style="font-size:38rpx;padding:15rpx 30rpx">服务提示</view>
+    <view>
+        <van-grid>
+            <van-grid-item clickable url="/pages/normal/index">
+                <view class="iconfont icon-changjianwenti" slot="icon" style="color:rgb(74, 144, 226);font-size:65rpx"></view>
+                <view class="text" slot="text">常见问题</view>
+            </van-grid-item>
+            <van-grid-item clickable bindtap="bindtap" data-url="/pages/healthCodeMembersAdd/index">
+                <view class="iconfont icon-jilu" slot="icon" style="color:rgb(74, 144, 226);font-size:60rpx"></view>
+                <view class="text" slot="text">代领健康码</view>
+            </van-grid-item>
+            <van-grid-item clickable bindtap="bindtap" data-url="/pages/healthCodeMembers/index">
+                <view class="iconfont icon-jiating1" slot="icon" style="color:rgb(74, 144, 226);font-size:60rpx"></view>
+                <view class="text" slot="text">家庭成员</view>
+            </van-grid-item>
+        </van-grid>
+    </view>
+    <view style="margin:30rpx;background:#fff;padding-top:15rpx">
+        <view class="sbutext">
+            <text class="iconfont icon-quan"></text>近14天内所有境外来桂人员要主动向目的地社区（村）和单位申报相关信息的补充信息</view>
+        <view class="sbutext">
+            <text class="iconfont icon-quan"></text>若体温高于37.3度或出现发热，干咳，乏力等症状，请及时到医院就医</view>
+        <view class="sbutext">
+            <text class="iconfont icon-quan"></text>湖北返桂来桂人员，请及时向目的地社区报备，并进行核酸检测，检测费用由当地政府承担</view>
+        <view class="sbutext">
+            <text class="iconfont icon-quan"></text>近14天内所有境外来桂人员要主动向目的地社区（村）和单位申报相关信息</view>
+        <view class="sbutext">
+            <text class="iconfont icon-quan"></text>本服务利用汇聚的卫生健康、民航、铁路等方面数据，为公众提供本人防疫健康信息相关查询服务。相关数据在不断汇聚和完善中，同时考虑到疫情传播的复杂性，不排除还有尚未掌握的其他方面数据和因素，请一线防控人员根据防控实际情况，结合健康码信息与相关的纸质证明材料，灵活处理。也请您密切关注自己身体状况，如有相关症状请及时咨询专业医疗机构，根据相关规定及时报告。</view>
+        <view class="sbutext">
+            <text class="iconfont icon-quan"></text>本服务由国家政务服务平台、广西数字政务一体化平台会同有关方面提供，将严格按规定保护您的个人信息安全。</view>
+        <view class="sbutext">
+            <text class="iconfont icon-quan"></text>请严格遵守《中华人民共和国网络安全法》等相关法律法规规定，不得利用本服务提供的查询结果从事侵害他人名誉、隐私等活动。</view>
+        <view class="sbutext">
+            <text class="iconfont icon-quan"></text>有任何疑问，请拨打12345热线反馈咨询。</view>
+    </view>
+</view>
+<view wx:if="{{!appShow}}">
+    <steps></steps>
+    <passport bind:change="getPass" passes="{{pass}}"></passport>
+</view>
+<van-dialog id="van-dialog"></van-dialog>

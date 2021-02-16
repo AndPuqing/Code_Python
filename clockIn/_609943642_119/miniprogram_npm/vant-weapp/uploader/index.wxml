@@ -1,0 +1,24 @@
+<view class="van-uploader">
+    <view class="van-uploader__wrapper">
+        <block wx:if="{{previewImage}}">
+            <view class="van-uploader__preview" wx:for="{{lists}}" wx:key="{{ index }}">
+                <image alt="{{item.name||'图片'+index}}" bind:tap="doPreviewImage" class="van-uploader__preview-image" data-url="{{item.url||item.path}}" mode="{{imageFit}}" src="{{item.url||item.path}}" style="width: {{computedPreviewSize}}px; height: {{computedPreviewSize}}px;" wx:if="{{item.isImage}}"></image>
+                <view class="van-uploader__file" style="width: {{computedPreviewSize}}px; height: {{computedPreviewSize}}px;" wx:else>
+                    <van-icon class="van-uploader__file-icon" name="description"></van-icon>
+                    <view class="van-uploader__file-name van-ellipsis">{{item.name||item.url||item.path}}</view>
+                </view>
+                <van-icon bind:tap="deleteItem" class="van-uploader__preview-delete" data-index="{{index}}" name="delete"></van-icon>
+            </view>
+        </block>
+        <block wx:if="{{isInCount}}">
+            <view bind:tap="startUpload" class="van-uploader__slot" wx:if="{{useSlot}}">
+                <slot></slot>
+            </view>
+            <view bind:tap="startUpload" class="van-uploader__upload" style="width: {{computedPreviewSize}}px; height: {{computedPreviewSize}}px;" wx:else>
+                <van-icon class="van-uploader__upload-icon" name="plus"></van-icon>
+                <text class="van-uploader__upload-text" wx:if="{{uploadText}}">{{uploadText}}</text>
+            </view>
+        </block>
+    </view>
+</view>
+<wxs module="utils" src="../wxs/utils.wxs" />

@@ -1,0 +1,30 @@
+<view>
+    <view style="height:160rpx;background: #09BA07 {{key=='ncov'?'url(https://mlh.suease.com/yqfk/static/banner.png)':''}} no-repeat right;background-attachment: scroll;background-size:contain;text-align:center;line-height:70rpx" wx:if="{{log}}">
+        <view style="font-size:40rpx;font-weight:bold;color:#fff">{{group.name}}</view>
+    </view>
+    <view style="position:absolute;top:90rpx;width:100%;margin-bottom:150rpx">
+        <view wx:if="{{!error}}">
+            <official-account></official-account>
+            <inputPanel bindchange="onchange" code="{{code}}" flow="{{flow}}" group="{{group}}" house="{{house}}" inputplate="{{last_plate?last_plate:log.person.plate?log.person.plate:''}}" log="{{log}}" members="{{memebers}}" mqttkey="{{mqtt_key}}" parent="{{parent}}" pass="{{use}}" person="{{person}}" point="{{point}}" temp="{log.person.temp}" whitelist_user="{{whitelist_user}}" wx:if="{{log}}"></inputPanel>
+            <view style="margin:30rpx" wx:if="{{!bind&&log}}">
+                <view bindtap="gosiginCode" style="width:100%;height:200rpx;background:url('https://labeye.oss-cn-beijing.aliyuncs.com/2020/03/14/jkm.png') 100% 100% no-repeat;background-size: contain;"></view>
+            </view>
+            <view style="font-size:30rpx;padding:0 30rpx" wx:if="{{log&&group&&apply.length>0}}">该检查点，您还可以申请以下通行证</view>
+            <passport passes="{{apply}}" wx:if="{{log&&group&&apply.length>0}}"></passport>
+        </view>
+        <view bindtap="getDetail" style="background:#fff;margin:30rpx;text-align:center;color:#888;padding:30rpx;border-radius:8rpx" wx:if="{{error}}">
+            <view>
+                <van-icon color="#ff976a" name="warning" size="55rpx"></van-icon>
+            </view>
+            <view>服务器开了小差，点击此处重新加载</view>
+        </view>
+        <view bindtap="getDetail" style="background:#fff;margin:30rpx;text-align:center;color:#888;padding:30rpx;border-radius:8rpx" wx:if="{{is_id&&!error}}">
+            <view>
+                <van-icon color="#ff976a" name="warning" size="55rpx"></van-icon>
+            </view>
+            <view>二维码错误！请重新扫码或联系管理员</view>
+        </view>
+    </view>
+</view>
+<van-toast id="van-toast"></van-toast>
+<van-dialog id="van-dialog"></van-dialog>

@@ -1,0 +1,18 @@
+<view class="apply">
+    <view class="apply-title">选择所在的班级</view>
+    <view class="apply-input">
+        <van-cell-group>
+            <van-cell isLink bind:click="toggleSheet" data-type="building" title="学院" value="{{building.name||'请选择'}}"></van-cell>
+            <van-cell isLink bind:click="toggleSheet" data-type="simple" title="班级" value="{{simple.name||'请选择'}}"></van-cell>
+        </van-cell-group>
+    </view>
+    <view class="apply-btn">
+        <van-button bind:click="save" size="large" type="primary">提交</van-button>
+    </view>
+</view>
+<van-popup bind:close="toggle" customStyle="height: 50%;{{actions.length>0?'':'background:none'}}" position="bottom" show="{{sheetshow}}">
+    <view style="background:#fff;height:auto" wx:if="{{actions.length>0}}">
+        <view bindtap="getSheetData" class="popitem" data-item="{{item}}" hoverClass="hover" wx:for="{{actions}}" wx:key="index">{{item.name}}</view>
+    </view>
+</van-popup>
+<van-toast id="van-toast"></van-toast>

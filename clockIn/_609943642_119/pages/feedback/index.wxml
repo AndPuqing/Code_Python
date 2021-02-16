@@ -1,0 +1,19 @@
+<view>
+    <view>
+        <van-field clearable bind:input="getTitle" label="标题" placeholder="请您描述的问题" value="{{title}}"></van-field>
+    </view>
+    <view>
+        <van-field autosize maxlength: bind:input="getTextareaValue" customStyle="min-height:40px" inputClass="input-class" placeholder="在这里输入问题描述" placeholderStyle="font-size:32rpx;" rows="1" style="height:50px" type="textarea" value="{{textarea}}"></van-field>
+    </view>
+    <view style="background:#fff">
+        <camera bindchange="getImgs" imgs="{{imgs}}" type="camera"></camera>
+    </view>
+    <view class="panel-btn">
+        <van-button block bind:click="save" customClass="demo-margin-bottom" size="large" type="primary">
+			提交</van-button>
+    </view>
+    <van-cell-group title="反馈记录" wx:if="{{list.length>0}}">
+        <van-cell isLink title="{{item.title}}" url="/pages/feedbackDetail/index?id={{item.id}}" value="{{HelpFeedbackStateEnums[item.state]}}" wx:for="{{list}}" wx:key="index"></van-cell>
+    </van-cell-group>
+    <van-toast id="van-toast"></van-toast>
+</view>

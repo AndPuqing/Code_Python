@@ -1,0 +1,32 @@
+<view class="contain">
+    <view class="img">
+        <image src="{{file?file:self.photo}}" style="width:150rpx;height:150rpx"></image>
+        <view bindtap="chooseImg" class="spinner" wx:if="{{upload_percent==0}}">
+            <text class="iconfont icon-xiugai"></text>
+        </view>
+        <view class="spinner" wx:if="{{upload_percent>0}}">
+            <view>
+                <van-loading color="#fff" type="spinner"></van-loading>
+                <view>上传中{{upload_percent||0}}%</view>
+            </view>
+        </view>
+    </view>
+    <view style="padding:30rpx;font-size:28rpx;color:#666">修改个人信息</view>
+    <form bindsubmit="save">
+        <view>
+            <van-cell-group>
+                <van-field clearable bindblur="getdata" border="{{true}}" data-type="name" label="真实姓名" name="name" placeholder="请输入您的姓名" type="text" value="{{self.name}}"></van-field>
+                <van-field clearable bindblur="getdata" border="{{true}}" data-type="idcard" label="身份证号" name="idcard" placeholder="请输入您的身份证号" type="idcard" value="{{self.idcard}}"></van-field>
+                <van-field clearable bindblur="getdata" border="{{true}}" data-type="address" label="家庭住址" name="address" placeholder="请输入您的家庭住址" type="text" value="{{self.address}}"></van-field>
+            </van-cell-group>
+        </view>
+        <view class="panel-btn">
+            <button class="btn {{loading?'disabled':''}}" disabled="{{loading}}" formType="submit">提交</button>
+        </view>
+    </form>
+    <view class="panel-btn" style="padding-top:0">
+        <van-button plain bind:click="goback" customClass="demo-margin-bottom" size="large">
+			返回</van-button>
+    </view>
+    <van-toast id="van-toast"></van-toast>
+</view>

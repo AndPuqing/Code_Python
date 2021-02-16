@@ -1,0 +1,51 @@
+<view class="contain">
+    <view class="contain-head" style="background: #09BA07 {{key=='ncov'?'url(https://mlh.suease.com/yqfk/static/banner.png)':''}} no-repeat right;background-attachment: scroll;background-size:contain;">
+        <image backgroundSize="cover" class="userinfo-avatar" src="{{self.photo?self.photo:userInfo.avatarUrl?userInfo.avatarUrl:'/static/userinfo.png'}}"></image>
+        <view wx:if="{{self.id}}">
+            <view class="userinfo-nickname">{{self.name}}</view>
+            <view class="userinfo-group">{{self.deptname}}</view>
+        </view>
+        <view>
+            <view class="userinfo-nickname" wx:if="{{!self.id}}">暂未登录</view>
+        </view>
+    </view>
+    <view class="list" style="margin-top:0">
+        <van-cell isLink bind:click="goUrl" data-url="/pages/idProve/index" icon="contact" title="个人资料编辑" titleClass="celltile"></van-cell>
+        <van-cell isLink bind:click="goUrl" data-url="/pages/phoneTypeChoose/index" icon="phone-o" title="编辑手机号" titleClass="celltile" value="{{self.phone}}"></van-cell>
+        <van-cell isLink bind:click="goUrl" data-url="/pages/passList/index" icon="peer-pay" title="我的通行证" titleClass="celltile"></van-cell>
+        <van-cell isLink bind:click="goUrl" data-url="/pages/passLog/index" icon="todo-list-o" title="查看通行记录" titleClass="celltile"></van-cell>
+        <van-cell isLink bind:click="goUrl" data-url="/pages/leaveList/index" icon="notes-o" title="请假审核" titleClass="celltile" wx:if="{{key=='guet'}}"></van-cell>
+        <van-cell isLink bind:click="goUrl" data-url="/pages/passCardApply/index" icon="award-o" title="通行证审核" titleClass="celltile"></van-cell>
+        <van-cell isLink bind:click="goUrl" data-url="/pages/houseJionUserApply/index" icon="home-o" title="入户审核" titleClass="celltile"></van-cell>
+        <van-cell isLink bind:click="goUrl" data-url="/pages/leaveschoolapplicationApply/index" icon="records" title="离校审核" titleClass="celltile" wx:if="{{key=='guet'}}"></van-cell>
+        <van-cell isLink bind:click="goUrl" data-url="/pages/webviewNor/index?url=introduction/buildingItem" icon="label-o" title="楼栋长操作手册" titleClass="celltile" wx:if="{{buildingAdmin}}"></van-cell>
+        <van-cell isLink bind:click="goUrl" data-url="/pages/webviewNor/index?url=group/detail&id=5e9662c03c974c00019f447f" icon="friends-o" title="学生情况" titleClass="celltile" wx:if="{{administrator&&key=='guet'}}"></van-cell>
+        <van-cell isLink bind:click="goUrl" data-url="/pages/webview/index" icon="points" title="系统管理" titleClass="celltile" wx:if="{{isUnitAdmin}}"></van-cell>
+        <van-cell isLink bind:click="goUrl" data-url="/pages/feedback/index" icon="star-o" title="问题反馈" titleClass="celltile"></van-cell>
+    </view>
+    <view class="list" style="margin-bttom:30rpx" wx:if="{{students.length>0&&key=='ncov'}}">
+        <view style="margin:15rpx;">上报身体健康情况</view>
+        <van-cell isLink bind:click="goUrl" data-url="/pages/healthLineAdd2/index?hid={{item.household.id}}&name={{item.member.name}}&phone={{item.member.phone}}&student=true&id={{item.member.uid}}" label="{{item.member.name}}" labelClass="label" title="{{item.household.group.name}} {{item.household.building.name}} {{item.household.name}}" titleClass="celltile" wx:for="{{students}}" wx:key="index"></van-cell>
+    </view>
+    <view class="list" style="margin-bttom:30rpx" wx:if="{{key=='guet'&&shcool.length>0}}">
+        <view style="margin:15rpx;">我的班级</view>
+        <van-cell isLink bind:click="gohouseApplyDetail" data-item="{{item}}" title="{{item.group.name}} {{item.building.name}} {{item.name}}" titleClass="celltile" wx:for="{{shcool}}" wx:key="index"></van-cell>
+    </view>
+    <view class="list" style="margin-bttom:30rpx" wx:if="{{admins.length>0}}">
+        <view style="margin:15rpx;">我管理的楼栋及部门</view>
+        <van-cell isLink bind:click="goUrl" data-url="/pages/webviewBuilding/index?id={{item.id}}" title="{{item.group.name}} {{item.name}}" titleClass="celltile" wx:for="{{admins}}" wx:key="index"></van-cell>
+    </view>
+    <view class="list" style="margin-bttom:30rpx" wx:if="{{household.length>0}}">
+        <view style="margin:15rpx;">我的住所和单位</view>
+        <van-cell isLink bind:click="gohouseDetail" data-item="{{item}}" title="{{item.group.name}} {{item.building.name}} {{item.name}}" titleClass="celltile" wx:for="{{household}}" wx:key="index"></van-cell>
+    </view>
+    <view style="margin:30rpx">
+        <van-button bindtap="loginOut" size="large" wx:if="{{self.id}}">退出登录</van-button>
+        <van-button bindtap="gologin" size="large" type="primary" wx:if="{{!self.id}}">点击登录</van-button>
+        <view bindlongtap="goUrl" class="verson" data-url="/pages/log/index">版本:{{version}}</view>
+    </view>
+    <van-toast id="van-toast"></van-toast>
+    <van-popup bind:close="toggleBottomPopup" customClass="bottom" data-index="1" position="bottom" show="{{popShow}}">
+        <van-datetime-picker bind:cancel="toggleBottomPopup" bind:confirm="onTimeChange" maxDate="{{maxDate}}" minDate="{{minDate}}" title="请选择时间" type="date" value="{{currentDate}}"></van-datetime-picker>
+    </van-popup>
+</view>

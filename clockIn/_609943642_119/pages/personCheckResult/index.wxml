@@ -1,0 +1,25 @@
+<view class="code">
+    <view class="code-head">
+        <image class="code-head_img" src="{{checkDetail.user.photo}}"></image>
+        <view class="code-head_name">{{checkDetail.user.name}}({{checkDetail.households[0].unit_name}} {{checkDetail.households[0].no}})</view>
+        <view class="code-head_subtitle">{{checkDetail.health_last.timeTxt}}前身体状态</view>
+        <view class="code-head_health">
+            <text class="code-head_healthitem" wx:for="{{checkDetail.health_last.data.tags}}" wx:key="index">{{item}}</text>
+            <text class="code-head_healthitem" wx:if="{{checkDetail.health_last.data.tags.length==0}}">健康</text>
+        </view>
+    </view>
+    <view class="code-actions">
+        <text class="item" wx:for="{{actions}}" wx:key="index">{{item}}</text>
+    </view>
+    <view class="code-check">
+        <view>
+            <van-icon color="rgb(31, 144, 230)" name="checked" size="100rpx"></van-icon>
+        </view>
+        <view class="code-check_title">操作成功</view>
+    </view>
+    <view class="btn">
+        <van-button bind:click="goback" size="large" type="primary">返回首页</van-button>
+        <van-button plain customClass="canbtn" size="large" type="primary">继续扫码</van-button>
+    </view>
+</view>
+<van-toast id="van-toast"></van-toast>

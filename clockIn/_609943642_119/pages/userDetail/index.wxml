@@ -1,0 +1,58 @@
+<view>
+    <view class="basic">
+        <image src="{{detail.user.photo}}" style="width:150rpx;height:150rpx"></image>
+        <view>{{detail.user.name}}</view>
+    </view>
+    <view style="margin:0 30rpx">
+        <van-cell-group title="基本信息">
+            <van-cell title="手机号" value="{{detail.user.phone}}"></van-cell>
+            <van-cell title="身份证" value="{{detail.user.idcard}}"></van-cell>
+            <van-cell title="住址" value="{{detail.user.address}}"></van-cell>
+            <van-cell border="{{false}}" title="健康码状态" wx:if="{{detail.health_code}}">
+                <view>
+                    <view class="flex" wx:if="{{detail.health_code.type==3}}">
+                        <view class="block" style="margin-right:8rpx; background-color:#0c0"></view>{{colorType[detail.health_code.type]}}
+				</view>
+                    <view class="flex" wx:if="{{detail.health_code.type==2}}">
+                        <view class="block" style="margin-right:8rpx; background-color:#f90"></view>{{colorType[detail.health_code.type]}}
+				</view>
+                    <view class="flex" wx:if="{{detail.health_code.type==1}}">
+                        <view class="block" style="margin-right:8rpx; background-color:#f00"></view>{{colorType[detail.health_code.type]}}
+				</view>
+                </view>
+            </van-cell>
+        </van-cell-group>
+    </view>
+    <view style="margin:0 30rpx" wx:if="{{detail.health}}">
+        <van-cell-group title="健康信息">
+            <view style="border-bottom:1rpx solid #f2f2f2;padding:30rpx ;background:#fff">
+                <view>{{detail.health.createdTxt}}</view>
+                <view>
+                    <view class="card-desc_item" style="{{i>0?'margin-left:10rpx':''}}" wx:for="{{detail.health.data.tags}}" wx:for-index="i" wx:for-item="v" wx:key="i">{{v}}</view>
+                    <view class="card-desc_item" style="{{i>0?'margin-left:10rpx':''}}" wx:if="{{detail.health.data.tags&&detail.health.data.tags.length==0}}">健康</view>
+                    <view class="card-desc_item" style="margin-left:10rpx" wx:if="{{detail.health.data.flags>4}}">有接触</view>
+                </view>
+            </view>
+        </van-cell-group>
+    </view>
+    <view style="margin:0 30rpx" wx:if="{{detail.itinerary.length>0}}">
+        <van-cell-group title="行程信息">
+            <view style="border-bottom:1rpx solid #f2f2f2;padding:30rpx;font-size:30rpx;background:#fff" wx:for="{{detail.itinerary}}" wx:key="index">
+                <view class="flex">
+                    <view class="flex1">{{item.start.location}}</view>
+                    <view class="flex1" style="text-align:center;color:#666">
+                        <view>{{item.type}}<text wx:if="{{item.train_number}}">/{{item.train_number}}</text>
+                        </view>
+                        <view style="font-siz:32rpx">{{item.dayTxt}}</view>
+                    </view>
+                    <view class="flex1">{{item.end.location}}</view>
+                </view>
+                <view wx:if="{{item.members.length>1}}">
+						同行人：
+						<view class="health-member" wx:if="{{v.name}}" wx:for="{{item.members.length>1}}" wx:for-index="i" wx:for-item="v" wx:key="i">{{v.name}}</view>
+                </view>
+            </view>
+        </van-cell-group>
+    </view>
+</view>
+<van-toast id="van-toast"></van-toast>

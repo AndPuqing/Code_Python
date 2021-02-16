@@ -1,0 +1,60 @@
+<view class="code" wx:if="{{active.id&&show}}">
+    <van-cell-group>
+        <van-cell title="当前位置:{{active.name}}" titleWidth="400rpx">
+            <van-button bind:click="toggleSheet" size="mini">切换</van-button>
+        </van-cell>
+    </van-cell-group>
+    <view class="code-head">
+        <userheader url="{{log.user.photo}}"></userheader>
+        <view class="code-head_name">{{log.user.name}}</view>
+        <view class="code-head_health" wx:if="{{healthlog.id}}">
+			{{healthlog.timeTxt}}前身体状态:
+			<healthTags health="{{healthlog.data}}">{{item}}</healthTags>
+        </view>
+    </view>
+    <view class="flex" style="margin:30rpx" wx:if="{{use_members.length>0||house.members.length>0}}">
+		家庭成员:
+		<view class="flex1">
+            <van-tag plain round size="medium" style="margin-right:20rpx;margin-bottom:10rpx" wx:for="{{use_members||house.members}}" wx:key="index">{{item.name}}</van-tag>
+        </view>
+    </view>
+    <view class="code-check">
+        <view wx:if="{{passable}}">
+            <van-icon color="rgb(31, 144, 230)" name="checked" size="100rpx"></van-icon>
+        </view>
+        <view wx:if="{{!passable}}">
+            <van-icon color="#e94f4f" name="clear" size="100rpx"></van-icon>
+        </view>
+        <view class="code-check_title">{{!passable?'不许':'允许'}}放行</view>
+        <view class="code-check_subtitle">{{passable?'有':'没有'}}相关的通行证</view>
+    </view>
+    <view style="margin:0 30rpx;margin-bottom:30rpx" wx:if="{{!(house||parent.type==0)}}">
+        <van-notice-bar leftIcon="volume-o" text="该用户不在本小区或单位，请注意！"></van-notice-bar>
+    </view>
+    <view style="margin:0 30rpx;" wx:if="{{submitflag}}">
+        <van-button plain bind:click="goIndex" size="large" type="info">返回主页</van-button>
+    </view>
+    <view wx:if="{{log.id&&!submitflag}}">
+        <inputPanel bindchange="inputPanelBack" group="{{group}}" house="{{house}}" inputplate="{{checkpoint.last_plate?checkpoint.last_plate:log.person.plate?log.person.plate:''}}" log="{{log}}" parent="{{parent}}" pass="{{use}}" person="{{person}}" temp="{log.person.temp}" wx:if="{{log&&group}}"></inputPanel>
+    </view>
+</view>
+<view style="margin-top:100rpx" wx:if="{{!active.id&&show}}">
+    <view class="code-check">
+        <view>
+            <van-icon color="#ff976a" name="info" size="100rpx"></van-icon>
+        </view>
+        <view class="code-check_title">请勿乱扫他人的通行码</view>
+        <view class="code-check_subtitle">我们非常注重保护用户的隐私，您不是工作人员，我们不会显示相关信息！</view>
+    </view>
+    <view class="flex" style="text-align:center">
+        <view class="flex1">
+            <van-button bindtap="goback" customClass="btn" type="default">返回首页</van-button>
+        </view>
+        <view class="flex1">
+            <van-button bindtap="goPasslog" customClass="btn" type="default">出行记录</van-button>
+        </view>
+    </view>
+</view>
+<van-action-sheet actions="{{groups}}" bind:close="toggleSheet" bind:select="onSelect" closeOnClickOverlay="{{true}}" show="{{sheetshow}}" zIndex="{{10000}}"></van-action-sheet>
+<van-toast id="van-toast"></van-toast>
+<van-dialog id="van-dialog"></van-dialog>

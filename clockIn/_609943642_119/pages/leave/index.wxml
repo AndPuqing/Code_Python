@@ -1,0 +1,24 @@
+<view class="contain">
+    <view class="contain-head">
+        <view style="font-size:40rpx;font-weight:600">桂电请假申请</view>
+        <view style="font-size:30rpx;color:#666">需要辅导员审核，审核通过之后，即可完成请假</view>
+    </view>
+    <view class="contain-body">
+        <view class="contain-head_input">
+            <van-cell isLink bind:click="toggleBottomPopup" data-type="startTime" title="离校日期" value="{{startTime}}"></van-cell>
+            <van-cell isLink bind:click="toggleBottomPopup" data-type="endTime" title="返校日期" value="{{endTime}}"></van-cell>
+            <van-field bind:change="getData" border="{{true}}" data-type="destination" label="离校居住地" placeholder="请输入您的离校居住地" type="text" wx:if="{{!popShow}}"></van-field>
+            <van-field bind:change="getData" border="{{true}}" data-type="desc" label="申请说明" placeholder="请输入您的说明" type="text" wx:if="{{!popShow}}"></van-field>
+            <myCamera bind:change="getphoto" type="camera"></myCamera>
+        </view>
+        <view style="font-size:32rpx;padding:20rpx 0">请选择正确的离校时间，可上传照片说明情况</view>
+    </view>
+    <view class="contain-btn">
+        <van-button bind:click="save" customClass="btn" size="large" type="primary">提交</van-button>
+    </view>
+</view>
+<van-popup bind:close="toggleBottomPopup" customClass="bottom" data-index="1" position="bottom" show="{{popShow}}">
+    <van-datetime-picker bind:cancel="toggleBottomPopup" bind:confirm="onTimeChange" minDate="{{mixdate}}" title="请选择时间" type="date" value="{{currentDate1}}"></van-datetime-picker>
+</van-popup>
+<van-toast id="van-toast"></van-toast>
+<van-dialog id="van-dialog"></van-dialog>

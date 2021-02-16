@@ -1,0 +1,43 @@
+<view>
+    <view class="health">
+        <view class="health-head">
+            <view style="flex:1">
+                <image src="{{active.photo}}" style="width:60rpx;height:60rpx;vertical-align:middle;margin-right:10rpx" wx:if="{{active.photo}}"></image>{{active.name}}
+			</view>
+            <view bindtap="toggleSheet" style="font-size:30rpx;line-height:60rpx">切换其他成员</view>
+        </view>
+        <view class="health-btn" wx:if="{{active.id}}">
+            <van-button bind:click="dialogtoggle" size="large">+添加记录</van-button>
+        </view>
+        <view>
+            <view style="margin:0 30rpx;border-bottom:1rpx solid #f2f2f2;padding:30rpx 0;font-size:30rpx" wx:for="{{list}}" wx:key="index">
+                <view class="flex">
+                    <view class="flex1">{{item.start.location}}</view>
+                    <view class="flex1" style="text-align:center;color:#666">
+                        <view>{{item.type}}</view>
+                        <view wx:if="{{item.train_number}}">{{item.train_number}}</view>
+                        <view style="font-siz:32rpx">{{item.dayTxt}}</view>
+                        <view style="font-siz:32rpx">{{item.end.station}}</view>
+                    </view>
+                    <view class="flex1">{{item.end.location}}</view>
+                </view>
+                <view style="margin-top:20rpx" wx:if="{{item.members.length>0}}">
+						同行：
+						<van-tag plain round size="medium" style="{{i>0?'margin-left:20rpx':''}}" wx:for="{{item.members}}" wx:for-index="i" wx:for-item="v" wx:key="i">{{v.name?v.name:v.user.name}}</van-tag>
+                </view>
+                <view style="margin-top:20rpx" wx:if="{{item.stopovers.length>0}}">
+						途径：
+						<van-tag plain round size="medium" style="{{i>0?'margin-left:20rpx':''}}" wx:for="{{item.stopovers}}" wx:for-index="i" wx:for-item="v" wx:key="i">{{v.location}}</van-tag>
+                </view>
+                <view style="text-align:right;margin-top:10rpx">
+                    <van-button bind:click="goitineraryDetail" customClass="btn" data-id="{{item.id}}" size="small">编辑</van-button>
+                    <van-button bind:click="deletItem" data-id="{{item.id}}" size="small">删除</van-button>
+                </view>
+            </view>
+        </view>
+    </view>
+</view>
+<van-dialog useSlot bind:close="dialogtoggle" show="{{show}}" showConfirmButton="{{false}}" title="请选择"></van-dialog>
+<van-action-sheet actions="{{members}}" bind:close="toggleSheet" bind:select="select" closeOnClickOverlay="{{true}}" show="{{sheetshow}}"></van-action-sheet>
+<van-dialog id="van-dialog"></van-dialog>
+<van-toast id="van-toast"></van-toast>

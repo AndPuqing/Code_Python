@@ -1,0 +1,52 @@
+<view style="position:relative">
+    <view style="height:160rpx;background: #09BA07 url('https://mlh.suease.com/yqfk/static/banner.png') no-repeat right;background-attachment: scroll;background-size:contain;text-align:center;line-height:70rpx">
+        <view style="font-size:40rpx;font-weight:bold;color:#fff">{{detail.group.name}}</view>
+    </view>
+    <view style="margin:30rpx;position:absolute;top:90rpx;border-radius:8rpx;">
+        <view class="card">
+            <qrcode></qrcode>
+            <view class="flex">
+                <view class="flex into">
+                    <view class="block" style="margin-right:8rpx; background-color:#0c0"></view>
+                    <view>健康可通行</view>
+                </view>
+                <view class="flex into">
+                    <view class="block" style="margin-right:8rpx;background-color:#f90"></view>
+                    <view>健康异常</view>
+                </view>
+                <view class="flex into">
+                    <view class="block" style="margin-right:8rpx;background-color:#f00"></view>
+                    <view>居家隔离期</view>
+                </view>
+            </view>
+            <view class="card-time">{{time}}</view>
+            <view class="{{passable?'card-success':'card-no'}}">{{self.name}} {{passable?'可以':'不能'}}通行</view>
+            <view class="card-title">您的信息已经提交给相关的检查员</view>
+            <view class="card-btn">
+                <van-button plain bind:click="gominiProgram" size="large" type="primary" wx:if="{{detail.point.entId}}">提交自治区扫码出入</van-button>
+            </view>
+            <view>
+                <van-collapse bind:change="onChange" value="{{activeNames}}">
+                    <van-collapse-item name="100" title="">
+                        <view slot="title" style="overflow:hidden">
+                            <van-tag type="success">{{CommunityHouseholdApplicationStateEnums[detail.use.state]}}</van-tag>
+							{{detail.use.group.name}}{{detail.use.household.no}}{{detail.use.name}}
+						</view>
+                        <view style="text-align:left">
+                            <view>{{detail.use.text}}</view>
+                            <text>{{detail.use.desc}}</text>
+                        </view>
+                    </van-collapse-item>
+                </van-collapse>
+            </view>
+        </view>
+        <view class="flex btn-bottom">
+            <view class="flex1">
+                <van-button bind:click="goback" customClass="btn" type="default">返回首页</van-button>
+            </view>
+            <view class="flex1">
+                <van-button bind:click="goUrl" customClass="btn" data-url="/pages/passLog/index" type="default">出行记录</van-button>
+            </view>
+        </view>
+    </view>
+</view>

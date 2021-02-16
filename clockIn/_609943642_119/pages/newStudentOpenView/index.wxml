@@ -1,0 +1,1 @@
+<web-view src="https://yxapp.guet.edu.cn/#/authorize?token={{token}} " wx:if="{{token}}"></web-view>

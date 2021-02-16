@@ -1,0 +1,13 @@
+<van-popup closeOnClickOverlay bind:close="onClose" show="{{show}}">
+    <view style="width:500rpx;height:600rpx;padding:30rpx;overflow: auto">
+        <view style="font-size:36rpx;font-weight:bold;text-align:center;padding:20rpx;">桂林电子科技大学学生外出承诺书</view>
+        <view style="text-indent: 2em;font-weight:bold">本人自觉遵守国家法律法规，秉持对自己负责、对他人负责、对学校负责的原则，承担疫情防控社会责任，郑重做出如下承诺：</view>
+        <view style="margin-top:12rpx">1. 严格遵守学校进出管理规定。遵循“非必要不外出”原则，尽量减少出校，做到学习、生活空间相对固定，避免到人群聚集尤其是空气流动性差的场所，在公共场所保持社交距离。</view>
+        <view style="margin-top:12rpx">2. 严格遵守学校疫情防控管理规定。如实上报个人行踪、体温等信息，出入校园配合核验“桂电畅行证”绿码。</view>
+        <view style="margin-top:12rpx">3. 离开桂林市区时严格遵守学校请销假制度，经所在学院批准后离开桂林市，并按规定时间返校。</view>
+        <view style="margin-top:12rpx">4. 离校外出期间，注意人身、财产安全，自觉做好个人防护。严格遵守《桂林电子科技大学大学生手册》和《桂林电子科技大学疫情防控期间学生行为管理规定》（桂电学〔2020〕2 号）等相关要求，离校期间产生的一切问题由学生本人负责。</view>
+    </view>
+    <view class="btn">
+        <van-button round bindtap="click" size="large" type="primary">我接受返校承诺</van-button>
+    </view>
+</van-popup>

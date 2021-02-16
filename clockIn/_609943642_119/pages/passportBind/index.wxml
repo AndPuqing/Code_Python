@@ -1,0 +1,29 @@
+<view>
+    <view style="padding:30rpx;text-align:center" wx:if="{{list.length==0}}">您暂无通行证</view>
+    <view style="margin-bottom:180rpx" wx:if="{{list.length>0}}">
+        <van-radio-group bind:change="onChange" value="{{radio}}">
+            <van-cell-group>
+                <van-cell clickable bind:click="onClick" data-name="{{index}}" wx:if="{{item.group.type==2020020701}}" wx:for="{{list}}" wx:key="index">
+                    <view slot="title">
+                        <view style="font-size:36rpx">
+                            <text class="iconfont icon-jiating"></text>{{item.group.name}} {{item.building.name}} {{item.building.no}} {{item.unit_name}} {{item.name?item.name:item.no}}</view>
+                        <view style="margin-top:20rpx" wx:if="{{item.members.length>0}}">
+								家庭成员:
+								<van-tag plain round size="medium" style="{{i>0?'margin-left:20rpx':''}}" wx:for="{{item.members}}" wx:for-index="i" wx:for-item="v" wx:key="i">{{v.name}}</van-tag>
+                        </view>
+                    </view>
+                    <view slot="right-icon" style="display:flex;justify-content:center;align-items:center">
+                        <van-radio name="{{index}}"></van-radio>
+                    </view>
+                </van-cell>
+            </van-cell-group>
+        </van-radio-group>
+        <view style="font-size:32rpx;text-align:center;padding:30rpx 0;">所在户不正确？点击"<text bindtap="addUser" style="color:#09BA07;">加入小区</text>"申请加入新的小区</view>
+    </view>
+    <view class="btn">
+        <view style="font-size:28rpx;color:#888">提示：选择通行证后确认进行绑定</view>
+        <van-button bind:click="bindCard" customClass="vabtn" disabled="{{list.length==0}}" size="large" type="primary">绑定</van-button>
+    </view>
+</view>
+<van-toast id="van-toast"></van-toast>
+<van-dialog id="van-dialog"></van-dialog>

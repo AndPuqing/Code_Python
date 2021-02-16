@@ -1,0 +1,6 @@
+<view class="" style="color:#353535;padding:30rpx;padding-bottom:0;font-size:40rpx;font-weight:500">{{news.title}}</view>
+<view class="text-center time" style="" wx:if="{{news}}">{{news.publishedTime}}发布</view>
+<view style="padding:0 8rpx;text-align:justify;">
+    <parser gestureZoom lazyLoad selectable showWithAnimation useAnchor useCache binderror="error" bindimglongtap="imglongtap" bindlinkpress="linkpress" bindready="ready" id="article"></parser>
+</view>
+<van-toast id="van-toast"></van-toast>

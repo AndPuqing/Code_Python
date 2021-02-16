@@ -1,0 +1,25 @@
+<view class="contain">
+    <view class="contain-head">
+        <view style="font-size:40rpx;font-weight:600">{{detail.name}}</view>
+        <view style="font-size:30rpx;color:#666">
+            <text wx:if="{{detail.expiredday}}">{{detail.expiredday}}天内有效，</text>{{detail.desc}}</view>
+    </view>
+    <view class="contain-body">
+        <view class="contain-head_title">情况说明</view>
+        <view class="contain-head_input">
+            <van-field bind:change="getPlate" border="{{true}}" label="车牌号" placeholder="请输入您的车牌号" type="text" wx:if="{{detail.type==10&&!popShow}}"></van-field>
+            <van-cell isLink bind:click="toggleBottomPopup" title="有效日期" value="{{date}}" wx:if="{{detail.type==5}}"></van-cell>
+            <van-field bind:change="getTrainnumber" border="{{true}}" label="申请说明" placeholder="请输入您的说明" type="text" wx:if="{{!popShow}}"></van-field>
+            <myCamera bind:change="getphoto" type="camera"></myCamera>
+        </view>
+        <view style="font-size:32rpx;padding:20rpx 0">可上传照片说明情况</view>
+    </view>
+    <view class="contain-btn">
+        <van-button bind:click="save" customClass="btn" size="large" type="primary">提交</van-button>
+    </view>
+</view>
+<van-popup bind:close="toggleBottomPopup" customClass="bottom" data-index="1" position="bottom" show="{{popShow}}">
+    <van-datetime-picker bind:cancel="toggleBottomPopup" bind:confirm="onTimeChange" minDate="{{mixdate}}" title="请选择时间" type="date" value="{{currentDate1}}"></van-datetime-picker>
+</van-popup>
+<van-toast id="van-toast"></van-toast>
+<van-dialog id="van-dialog"></van-dialog>

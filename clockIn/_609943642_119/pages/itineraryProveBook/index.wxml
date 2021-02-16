@@ -1,0 +1,16 @@
+<view class="contain">
+    <view class="title">如何获取通行大数据行程卡</view>
+    <view class="desc">1、长按下图识别进入国务院客户端</view>
+    <view class="content">
+        <image s class="img" showMenuByLongpress="{{true}}" src="http://labeye.oss-cn-beijing.aliyuncs.com/2020/04/21/proveimg/4771587488273_.pic.jpg"></image>
+    </view>
+    <view class="desc">2、填写桂电畅行证注册手机号，获取并填写验证码，同意授权请求后查询 “通信大数据行程卡”</view>
+    <view class="content">
+        <image src="http://labeye.oss-cn-beijing.aliyuncs.com/2020/04/21/proveimg/4791587488293_.pic.jpg" style="width:250rpx; margin:30rpx"></image>
+    </view>
+    <view class="desc">3、查询到自己的“通信大数据行程卡”(如图)，截取此图上传<text style="color:red">(注意：辅导员审核时会通过“通信大数据行程卡”来决定是否允许返校，请务必真实上传)</text>
+    </view>
+    <view class="content">
+        <image src="http://labeye.oss-cn-beijing.aliyuncs.com/2020/04/21/proveimg/4811587488306_.pic.jpg" style="width:250rpx; margin:30rpx"></image>
+    </view>
+</view>

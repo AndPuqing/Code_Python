@@ -1,0 +1,114 @@
+<view>
+    <view>
+        <view class="title">详细申请信息</view>
+        <van-cell-group>
+            <van-cell title="学号" titleClass="inputclass" value="{{detail.student_id}}" valueClass="inputclass"></van-cell>
+            <van-cell title="学生姓名" titleClass="inputclass" value="{{detail.name}}" valueClass="inputclass"></van-cell>
+            <van-cell title="手机号" titleClass="inputclass" value="{{detail.phone}}" valueClass="inputclass" wx:if="{{detail.phone}}"></van-cell>
+            <van-cell title="申请人" titleClass="inputclass" value="{{detail.user.name}}" valueClass="inputclass"></van-cell>
+            <van-cell title="学校名称" titleClass="inputclass" value="{{detail.group.name}}" valueClass="inputclass"></van-cell>
+            <van-cell title="班级名称" titleClass="inputclass" value="{{detail.household.name}}" valueClass="inputclass"></van-cell>
+            <van-cell title="申请时间" titleClass="inputclass" value="{{detail.createdTxt}}" valueClass="inputclass"></van-cell>
+            <van-cell title="申请说明" titleClass="inputclass" value="{{detail.desc}}" valueClass="inputclass" wx:if="{{detail.desc}}"></van-cell>
+            <van-cell title="审核状态" titleClass="inputclass" value="{{CommunityHouseholdApplicationStateEnums[detail.state]}}" valueClass="inputclass"></van-cell>
+            <van-cell title="是否从疫情中高风险地区返校" titleClass="inputclass" value="{{detail.imgs.length>0?'是':'否'}}" valueClass="inputclass"></van-cell>
+            <van-cell useLabelSlot title="当地健康码“绿码”图片和7天内的核酸检测报告" titleClass="inputclass" wx:if="{{detail.imgs.length>0}}">
+                <view slot="label">
+                    <image bindtap="previewImage2" data-img="{{item}}" data-imgs="{{detail.imgs}}" src="{{item}}" style="width:128rpx;height:128rpx" wx:for="{{detail.imgs}}" wx:key="index"></image>
+                </view>
+            </van-cell>
+        </van-cell-group>
+    </view>
+    <view>
+        <van-cell-group title="申请人信息">
+            <van-cell title="姓名" value="{{detail.user.name}}"></van-cell>
+            <van-cell border="{{false}}" title="健康码状态" wx:if="{{detail.health_code}}">
+                <view>
+                    <view class="flex" wx:if="{{detail.health_code.type==3}}">
+                        <view class="block" style="margin-right:8rpx; background-color:#0c0"></view>{{colorType[detail.health_code.type]}}
+					</view>
+                    <view class="flex" wx:if="{{detail.health_code.type==2}}">
+                        <view class="block" style="margin-right:8rpx; background-color:#f90"></view>{{colorType[detail.health_code.type]}}
+					</view>
+                    <view class="flex" wx:if="{{detail.health_code.type==1}}">
+                        <view class="block" style="margin-right:8rpx; background-color:#f00"></view>{{colorType[detail.health_code.type]}}
+					</view>
+                </view>
+            </van-cell>
+        </van-cell-group>
+    </view>
+    <view wx:if="{{detail.phone_itinerary}}">
+        <van-cell-group title="通信大数据行程卡">
+            <van-cell isLink bindtap="previewImage" data-url="{{detail.phone_itinerary.url}}" title="通信行程卡" titleClass="vantitle" titleWidth="450rpx">
+                <view style="display: flex;align-items: center;justify-content: flex-end;">
+                    <image src="{{detail.phone_itinerary.url}}" style="width:50rpx;height:50rpx" wx:if="{{detail.phone_itinerary.url}}"></image>{{detail.phone_itinerary.url?'已上传':'未上传'}}
+			</view>
+            </van-cell>
+            <van-cell title="手机号" titleClass="vantitle" titleWidth="450rpx" value="{{detail.phone_itinerary.result.phone}}" wx:if="{{detail.phone_itinerary.result}}"></van-cell>
+            <van-cell title="行程卡颜色" titleClass="vantitle" titleWidth="450rpx" value="{{detail.phone_itinerary.result.color}}" wx:if="{{detail.phone_itinerary.result}}"></van-cell>
+            <van-cell title="更新时间" titleClass="vantitle" titleWidth="200rpx" value="{{detail.phone_itinerary.result.updateTxt}}" wx:if="{{detail.phone_itinerary.result}}"></van-cell>
+            <van-cell title="14天内到达的城市" titleClass="vantitle" titleWidth="300rpx" wx:if="{{detail.phone_itinerary.result}}">
+                <view wx:for="{{detail.phone_itinerary.result.cities}}" wx:key="{{index}}">{{item}}</view>
+            </van-cell>
+            <van-cell title="是否成功" titleClass="vantitle" titleWidth="450rpx" value="{{detail.phone_itinerary.result.success?'成功':'未成功'}}" wx:if="{{detail.phone_itinerary.result}}"></van-cell>
+        </van-cell-group>
+    </view>
+    <view wx:if="{{markers.length>0}}">
+        <van-cell-group title="14天内到达的城市位置">
+            <map includePoints="{{point}}" markers="{{markers}}" style="width:100%"></map>
+        </van-cell-group>
+    </view>
+    <view wx:if="{{detail.health2.length>0}}">
+        <van-cell-group title="健康信息">
+            <view style="border-bottom:1rpx solid #f2f2f2;padding:30rpx ;background:#fff" wx:for="{{detail.health2}}" wx:key="index">
+                <view class="flex">
+                    <view class="flex1">{{item.createdTxt}}</view>
+                    <view wx:if="{{item.data.body_temperature}}">{{item.data.body_temperature}}°</view>
+                </view>
+                <view>
+                    <view class="card-desc_item" style="{{i>0?'margin-left:10rpx':''}}" wx:for="{{item.data.tags}}" wx:for-index="i" wx:for-item="v" wx:key="i">{{v}}</view>
+                    <view class="card-desc_item" style="{{i>0?'margin-left:10rpx':''}}" wx:if="{{item.data.tags&&item.data.tags.length==0}}">健康</view>
+                    <view class="card-desc_item" style="margin-left:10rpx" wx:if="{{item.data.flags>4}}">有接触</view>
+                </view>
+            </view>
+        </van-cell-group>
+    </view>
+    <view wx:if="{{detail.itineraries.length>0}}">
+        <van-cell-group title="行程信息">
+            <view style="border-bottom:1rpx solid #f2f2f2;padding:30rpx;font-size:30rpx;background:#fff" wx:for="{{detail.itineraries}}" wx:key="index">
+                <view class="flex">
+                    <view class="flex1">{{item.start.location}}</view>
+                    <view class="flex1" style="text-align:center;color:#666">
+                        <view>{{item.type}}</view>
+                        <view wx:if="{{item.train_number}}">{{item.train_number}}</view>
+                        <view style="font-siz:32rpx">{{item.dayTxt}}</view>
+                        <view style="font-siz:32rpx">{{item.end.station}}</view>
+                    </view>
+                    <view class="flex1">{{item.end.location}}</view>
+                </view>
+                <view style="margin-top:20rpx" wx:if="{{item.end.timeTxt}}">
+						到达时间：{{item.end.timeTxt}}
+					</view>
+                <view style="margin-top:20rpx" wx:if="{{item.members.length>0}}">
+						同行人：
+						<view class="health-member" wx:for="{{item.members}}" wx:for-index="i" wx:for-item="v" wx:key="i">{{v.name?v.name:v.user.name}}</view>
+                </view>
+                <view style="margin-top:20rpx" wx:if="{{item.stopovers.length>0}}">
+						途径：
+						<van-tag plain round size="medium" style="{{i>0?'margin-left:20rpx':''}}" wx:for="{{item.stopovers}}" wx:for-index="i" wx:for-item="v" wx:key="i">{{v.location}}</van-tag>
+                </view>
+            </view>
+        </van-cell-group>
+    </view>
+    <view class="title" wx:if="{{detail.state==0}}">操作</view>
+    <view class=" flex" wx:if="{{detail.state==0}}">
+        <view class="flex1 btn">
+            <van-button bindtap="save" customClass="btnw" data-type="0" size="small" type="primary">通过</van-button>
+        </view>
+        <view class="flex1 btn">
+            <van-button bindtap="save" customClass="btnw" data-type="1" size="small" type="danger">拒绝</van-button>
+        </view>
+    </view>
+</view>
+<van-toast id="van-toast"></van-toast>
+<van-dialog id="van-dialog"></van-dialog>

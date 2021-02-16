@@ -1,0 +1,44 @@
+<view style="margin-bottom:160rpx">
+    <view class="title">申请信息</view>
+    <view>
+        <van-cell-group>
+            <van-cell title="名称" value="桂电学生请假申请"></van-cell>
+            <van-cell title="申请人" value="{{detail.user.name}}"></van-cell>
+            <van-cell title="所在组" titleWidth="150rpx" value="{{detail.household_name}} {{detail.household_name2}} " wx:if="{{detail.household}}"></van-cell>
+            <van-cell title="申请目的" value="{{detail.reason}}" wx:if="{{detail.reason}}"></van-cell>
+            <van-cell title="申请时间" value="{{detail.createdTxt}}"></van-cell>
+            <van-cell title="审核状态" value="{{CommunityHouseholdApplicationStateEnums[detail.state]}}" valueClass="{{detail.state==1?'success':'danger'}}"></van-cell>
+        </van-cell-group>
+    </view>
+    <view class="title">其他信息</view>
+    <view>
+        <van-cell-group>
+            <van-cell title="离校时间" value="{{detail.startTxt}}"></van-cell>
+            <van-cell title="返校时间" value="{{detail.endTxt}}"></van-cell>
+            <van-cell title="离校居住地点" value="{{detail.destination}}" wx:if="{{detail.destination}}"></van-cell>
+            <van-cell title="说明" value="{{detail.desc}}" wx:if="{{detail.desc}}"></van-cell>
+            <van-cell useLabelSlot title="图片" wx:if="{{detail.imgs.length>0}}">
+                <view slot="label" style="background:#fff">
+                    <image bindtap="previewImg" class="img" data-url="{{item}}" src="{{item}}" wx:for="{{detail.imgs}}" wx:key="index"></image>
+                </view>
+            </van-cell>
+        </van-cell-group>
+    </view>
+    <view class="bottom">
+        <view class="flex1" style="margin-left:30rpx">
+            <van-button bind:click="adiut" data-type="0" size="small" style="margin-right:20rpx" type="primary" wx:if="{{detail.state==0}}">同意</van-button>
+            <van-button bind:click="adiut" data-type="1" size="small" style="margin-right:20rpx" type="danger" wx:if="{{detail.state==0}}">拒绝</van-button>
+            <van-button bind:click="delete" data-type="1" size="small" style="margin-right:20rpx" type="danger" wx:if="{{detail.state==1}}">拒绝</van-button>
+        </view>
+        <view class="flex1" style="text-align:right">
+            <van-button bind:click="goback" size="small" style="margin-right:20rpx">返回首页</van-button>
+            <van-button bind:click="goUser" size="small" style="margin-right:20rpx" wx:if="{{detail.owner_type==0}}">个人信息</van-button>
+            <van-button bind:click="goHouse" size="small" style="margin-right:20rpx" wx:if="{{detail.owner_type==1}}">家庭信息</van-button>
+        </view>
+    </view>
+</view>
+<van-popup bind:close="toggle" position="bottom" show="{{popShow}}">
+    <van-datetime-picker bind:cancel="toggle" bind:confirm="onTimeChange" minDate="{{mixdate}}" title="请选择日期" type="date" value="{{currentDate1}}"></van-datetime-picker>
+</van-popup>
+<van-toast id="van-toast"></van-toast>
+<van-dialog id="van-dialog"></van-dialog>

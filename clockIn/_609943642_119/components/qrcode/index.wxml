@@ -1,0 +1,8 @@
+<view style="height:{{size}}rpx;display: flex;justify-content: center;">
+    <image bindtap="previewImg" class="code-body_img" mode="scaleToFill" src="{{imagePath}}" style="width:{{size}}rpx;height:{{size}}rpx;" wx:if="{{!canvasHidden&&imagePath}}"></image>
+</view>
+<view class="canvas-box">
+    <canvas canvasId="mycanvas" style="width:686rpx;height:686rpx;background:#f1f1f1;" wx:if="{{canvasHidden}}"></canvas>
+</view>
+<healthtags health="{{health.data}}" wx:if="{{health&&health.data}}"></healthtags>
+<view class="quaranrtine" wx:if="{{quarantine}}">正在隔离，隔离至{{quarantine.endtxt}}</view>

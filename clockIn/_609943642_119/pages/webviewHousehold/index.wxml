@@ -1,0 +1,1 @@
+<web-view src="{{host}}/yqfk/#{{url}}?id={{id}}" wx:if="{{id}}"></web-view>

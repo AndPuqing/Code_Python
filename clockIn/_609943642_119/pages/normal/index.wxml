@@ -1,0 +1,7 @@
+<view style="padding:30rpx;font-size:40rpx;text-align:center">广西健康码的常见问题</view>
+<view class="content">
+    <block wx:for="{{desc}}" wx:key="index">
+        <view class="title">{{index+1}}、{{item.title}}</view>
+        <view class="desc">{{item.desc}}</view>
+    </block>
+</view>

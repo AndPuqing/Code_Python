@@ -1,0 +1,9 @@
+<view class="doc-container">
+    <view class="doc-content {{withoutPadding?'doc-content--without-pd':''}}">
+        <slot></slot>
+    </view>
+    <view bindtouchend="end" bindtouchstart="start" class="doc-title">
+        <view bindtap="clipboar" style="text-align:center" wx:if="{{code}}">{{code}}</view>
+		{{title}}
+	</view>
+</view>

@@ -1,0 +1,29 @@
+<view class="apply">
+    <view class="apply-title">个人信息登记</view>
+    <view bindtap="chooseGroup" class="apply-house">
+		{{group.name?group.name:'点击此处选择'+GroupTypeEnum[flag]}}
+		<text style="font-size:32rpx;color:#666" wx:if="{{group.name}}">重新选择</text>
+        <van-icon name="arrow-down" size="40rpx"></van-icon>
+    </view>
+    <view class="apply-input">
+        <van-cell-group>
+            <van-cell isLink bind:click="toggleSheet" data-type="building" title="{{legend_build[flag]?legend_build[flag]:'楼栋'}}" value="{{building.name||'请选择'}}" wx:if="{{flag!='2020020704'}}"></van-cell>
+            <van-cell isLink bind:click="toggleSheet" data-type="unit" title="单元" value="{{unit.name||'请选择'}}" wx:if="{{flag!='2020020703'&&units.length>0}}"></van-cell>
+            <van-cell isLink bind:click="toggleSheet" data-type="simple" title="楼栋或房间名称" value="{{simple.name||'请选择'}}" wx:if="{{key=='guet'&&building.id||flag!='2020020703'&&building.id}}"></van-cell>
+            <van-cell isLink bind:click="toggleSheet" data-type="type" title="您的身份" value="{{active.name}}"></van-cell>
+            <van-field autosize bind:change="inputchange" border="{{false}}" label="申请理由" placeholder="请输入申请理由" type="textarea" wx:if="{{!sheetshow}}"></van-field>
+        </van-cell-group>
+    </view>
+    <view class="apply-btn" wx:if="{{group.type=='2020020704'&&buildings.length>0}}">
+        <van-button bind:click="goAddGroup" customClass="btnClass" size="large">未找到房间号？点击创建</van-button>
+    </view>
+    <view class="apply-btn">
+        <van-button bind:click="save" size="large" type="primary">提交</van-button>
+    </view>
+</view>
+<van-popup bind:close="toggle" customStyle="height: 50%;{{actions.length>0?'':'background:none'}}" position="bottom" show="{{sheetshow}}">
+    <view style="background:#fff;height:auto" wx:if="{{actions.length>0}}">
+        <view bindtap="getSheetData" class="popitem" data-item="{{item}}" hoverClass="hover" wx:for="{{actions}}" wx:key="index">{{item.name}}</view>
+    </view>
+</van-popup>
+<van-toast id="van-toast"></van-toast>

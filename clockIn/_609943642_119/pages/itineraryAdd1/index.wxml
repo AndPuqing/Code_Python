@@ -1,0 +1,124 @@
+<view>
+    <view class="contain">
+        <view class="panel-field">
+            <form bindsubmit="save">
+                <view>
+                    <view style="text-align:center;padding:28rpx;padding-bottom:0;color:rgb(220, 98, 98);font-size:30rpx" wx:if="{{!id&&!student}}">注：请填写2020年08月01日以后去往过的城市</view>
+                    <view style="text-align:center;padding:20rpx " wx:if="{{!id&&!student}}">
+                        <van-button bind:click="noLeaveSave" size="small" type="primary">未离开过</van-button>
+                    </view>
+                    <view class="title">行程基本信息</view>
+                    <view class="card">
+                        <van-cell isLink bind:click="toggleBottomPopup" data-type="date" title="出行日期" value="{{date}}"></van-cell>
+                        <van-cell isLink bind:click="toggleArea" data-model="location" data-type="start" title="起点" value="{{start.location}}"></van-cell>
+                        <van-cell bind:click="toggleArea" data-model="location" data-type="end" isLink="{{!student}}" title="终点" value="{{end.location}}"></van-cell>
+                        <van-cell isLink useLabelSlot bind:click="toggleSheet" data-model="station" data-type="end" title="终点站" value="{{station.name}}" wx:if="{{is_guilin}}">
+                            <view slot="label" style="color:red">注：仅在桂林站、桂林北站以及桂林两江机场设接站服务</view>
+                        </van-cell>
+                        <van-field bindblur="getendStation" border="{{true}}" data-type="station.name" label="终点站" placeholder="请输入终点站" type="text" value="{{station.name}}" wx:if="{{!is_guilin&&!popShow&&!areaShow&&!sheetshow&&!popShowTime}}"></van-field>
+                        <van-cell isLink bind:click="toggleBottomPopup" data-type="arrive" title="到达终点站日期" value="{{arrive}}"></van-cell>
+                        <van-cell isLink bind:click="toggleBottomPopupTime" title="到达终点站时间" value="{{arriveTime}}"></van-cell>
+                    </view>
+                    <block wx:for="{{transports}}" wx:key="index">
+                        <view class="flex title">
+                            <view class="flex1">返程交通方式{{index+1}}</view>
+                            <view bindtap="deletePort" data-index="{{index}}" wx:if="{{transports.length>1}}">
+                                <van-icon color="red" name="clear" size="34rpx"></van-icon>
+                            </view>
+                        </view>
+                        <view class="card">
+                            <van-cell isLink bind:click="toggleStation" data-index="{{index}}" data-model="initType" title="交通方式" value="{{item.initType.name}}"></van-cell>
+                            <van-field bindblur="getStation" border="{{true}}" data-index="{{index}}" data-model="train_number" label="{{label[item.initType.name]||'车次'}}" placeholder="请输入{{label[item.initType.name]}}" type="text" value="{{item.train_number}}" wx:if="{{!popShow&&!areaShow&&!sheetshow&&!popShowTime}}"></van-field>
+                            <van-field bindblur="getStation" border="{{true}}" data-index="{{index}}" data-model="coach" label="车厢" placeholder="请输入您的车厢" type="text" value="{{item.coach}}" wx:if="{{item.initType.id==0&&!popShow&&!areaShow&&!sheetshow&&!popShowTime}}"></van-field>
+                            <van-field bindblur="getStation" border="{{true}}" data-index="{{index}}" data-model="seat" label="座位" placeholder="请输出您的座位" type="text" value="{{item.seat}}" wx:if="{{item.initType.id!=3&&!popShow&&!areaShow&&!sheetshow&&!popShowTime}}"></van-field>
+                        </view>
+                    </block>
+                    <view bindtap="addPort" hoverClass="hover" style="font-size:34rpx;background:#fff;text-align:center;margin:15rpx 30rpx;padding:15rpx 30rpx">+添加中转方式</view>
+                    <view class="title" wx:if="{{is_guilin&&CommunityItineraryGUETBackShcoolTypeEnums}}">返回学校方式</view>
+                    <view class="card" wx:if="{{is_guilin&&CommunityItineraryGUETBackShcoolTypeEnums}}">
+                        <van-radio-group bind:change="onBackChange" value="{{guet_back_shcool_type}}">
+                            <van-cell-group>
+                                <van-cell clickable bind:click="onClick" border="{{i+1!=item.data.length}}" data-index="{{i}}" data-name="{{i}}" wx:for="{{CommunityItineraryGUETBackShcoolTypeEnums}}" wx:for-index="i" wx:for-item="v" wx:key="i">
+                                    <view class="radiotitle" slot="title">
+                                        <view>
+                                            <van-radio checkedColor="#07c160" name="{{i}}" slot="right-icon"></van-radio>
+                                        </view>
+                                        <view style="margin-left:10rpx;font-size:34rpx">{{v}}</view>
+                                    </view>
+                                </van-cell>
+                            </van-cell-group>
+                        </van-radio-group>
+                    </view>
+                    <view class="title" wx:if="{{stopovers.length>0}}">中转城市</view>
+                    <view class="card">
+                        <van-cell bind:click="toggleArea" data-model="stopovers" data-type="{{index}}" title="中转城市{{index+1}}" titleWidth="150rpx" wx:for="{{stopovers}}" wx:key="index">
+								{{item.location}}
+								<van-icon name="arrow"></van-icon>
+                            <van-button catchtap="deleteStopovers" data-index="{{index}}" size="mini" wx:if="{{stopovers.length>0}}">删除</van-button>
+                        </van-cell>
+                    </view>
+                    <view bindtap="addStopovers" hoverClass="hover" style="font-size:34rpx;background:#fff;text-align:center;margin:15rpx 30rpx;padding:15rpx 30rpx">+添加中转城市</view>
+                </view>
+                <view wx:if="{{members.length>0}}">
+                    <view style="padding:30rpx">选择同行人：</view>
+                    <view class="card">
+                        <van-checkbox-group bind:change="onChange" value="{{result}}">
+                            <van-cell clickable bind:click="toggle" data-index="{{index}}" valueClass="value-class" wx:for="{{members}}" wx:key="index">
+                                <view style="display:flex">
+                                    <van-checkbox catch:tap="noop" class="checkboxes-{{index}}" name="{{index}}"></van-checkbox>
+                                    <view style="margin-left:16rpx;color:#000;text-align:left">{{item.name}}
+											<view style="font-size:30rpx;color:#666">{{item.phone}}</view>
+                                    </view>
+                                </view>
+                            </van-cell>
+                        </van-checkbox-group>
+                    </view>
+                </view>
+                <view bindtap="addTogether" hoverClass="hover" style="font-size:34rpx;background:#fff;text-align:center;margin:15rpx 30rpx;padding:15rpx 30rpx">+添加同行人</view>
+                <view wx:if="{{!popShow&&!areaShow&&!sheetshow&&!popShowTime}}">
+                    <view>
+                        <view wx:for="{{togethers}}" wx:key="index">
+                            <view class="flex title">
+                                <view class="flex1">同行人{{index+1}}</view>
+                                <view bindtap="deleteTogether" data-index="{{index}}">
+                                    <van-icon color="red" name="clear" size="34rpx"></van-icon>
+                                </view>
+                            </view>
+                            <view class="card">
+                                <van-cell-group>
+                                    <van-field clearable bindblur="getdata" bindchange="setdata" border="{{true}}" data-index="{{index}}" data-type="name" label="真实姓名" placeholder="请输入同行人的姓名" type="text" value="{{id?item.name:''}}"></van-field>
+                                    <van-field clearable bindblur="getdata" bindchange="setdata" border="{{true}}" data-index="{{index}}" data-type="relationship" label="与您关系" placeholder="请输入与您关系" type="text" value="{{id?item.relationship:''}}"></van-field>
+                                    <van-field clearable bindblur="getdata" bindchange="setdata" border="{{true}}" data-index="{{index}}" data-type="idcard" label="身份证号" placeholder="请输入通行人的身份证号" type="idcard" value="{{id?item.idcard:''}}"></van-field>
+                                    <van-field clearable bindblur="getdata" bindchange="setdata" border="{{true}}" data-index="{{index}}" data-type="phone" label="电话" placeholder="请输入通行人的电话" type="text" value="{{id?item.phone:''}}"></van-field>
+                                </van-cell-group>
+                            </view>
+                        </view>
+                    </view>
+                </view>
+                <view style="margin:30rpx">
+                    <van-checkbox-group bind:change="radioChange" value="{{radio}}">
+                        <van-checkbox checkedColor="#07c160" name="1">
+                            <text style="font-size:28rpx">以上内容属实，如隐瞒、虚报，本人承担一切法律责任和相应后果。</text>
+                        </van-checkbox>
+                    </van-checkbox-group>
+                </view>
+                <view class="panel-btn ">
+                    <button class="btn" formType="submit">添加</button>
+                </view>
+            </form>
+        </view>
+    </view>
+</view>
+<van-toast id="van-toast"></van-toast>
+<van-popup bind:close="toggleBottomPopup" customClass="bottom" data-index="1" position="bottom" show="{{popShow}}">
+    <van-datetime-picker bind:cancel="toggleBottomPopup" bind:confirm="onTimeChange" minDate="{{mixdate}}" title="请选择日期" type="date" value="{{currentDate1}}"></van-datetime-picker>
+</van-popup>
+<van-popup bind:close="toggleBottomPopupTime" customClass="bottom" data-index="1" position="bottom" show="{{popShowTime}}">
+    <van-datetime-picker bind:cancel="toggleBottomPopupTime" bind:confirm="onSubTimeChange" title="请选择到达时间" type="time" value="{{currentDate2}}"></van-datetime-picker>
+</van-popup>
+<van-popup bind:close="toggleArea" customClass="bottom" data-index="1" position="bottom" show="{{areaShow}}">
+    <van-area areaList="{{area}}" bind:cancel="toggleArea" bind:confirm="areaSelect" value="450300"></van-area>
+</van-popup>
+<van-action-sheet actions="{{actions}}" bind:click-overlay="toggleSheet2" bind:select="select" show="{{sheetshow}}"></van-action-sheet>
+<van-action-sheet actions="{{types}}" bind:click-overlay="toggleStationSheet" bind:select="stationSelect" show="{{portShow}}"></van-action-sheet>
+<van-dialog id="van-dialog"></van-dialog>

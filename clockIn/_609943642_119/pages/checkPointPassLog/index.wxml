@@ -1,0 +1,27 @@
+<view>
+    <view class="{{scrollTop>30?'filter':'filter1'}}">
+        <van-cell-group>
+            <van-cell title="当前位置:{{active.name}}">
+                <van-button bind:click="toggleSheet" size="mini">切换</van-button>
+            </van-cell>
+        </van-cell-group>
+    </view>
+    <view>
+        <view style="display:flex" wx:for="{{list}}" wx:key="index">
+            <van-image lazyLoad customClass="img" height="150rpx" src="{{item.user.photo}}" width="150rpx"></van-image>
+            <view style="background:#fff;padding:30rpx;border-bottom:1rpx solid #f2f2f2;flex:1">
+                <view style="font-size:34rpx">{{item.user.name}}</view>
+                <view style="font-size:34rpx">{{item.createdTxt}}</view>
+                <view style="font-size:30rpx;color:#666">{{item.group.name}}</view>
+                <view>
+                    <van-tag plain size="medium" style="{{i>0?'margin-left:20rpx':''}}" type="primary" wx:for="{{item.flagsTags}}" wx:for-index="i" wx:for-item="v" wx:key="i">{{v}}</van-tag>
+                </view>
+            </view>
+        </view>
+    </view>
+    <view bindtap="getMore" style="text-align:center;border-top:1rpx solid #f2f2f2;padding:30rpx;background:#fff" wx:if="{{hasmore}}">加载更多</view>
+    <view style="padding:30rpx;text-align:center" wx:if="{{list.length==0}}">暂无数据</view>
+</view>
+<van-action-sheet actions="{{groups}}" bind:close="toggleSheet" bind:select="onSelect" closeOnClickOverlay="{{true}}" show="{{sheetshow}}" zIndex="{{10000}}"></van-action-sheet>
+<van-dialog id="van-dialog"></van-dialog>
+<van-toast id="van-toast"></van-toast>

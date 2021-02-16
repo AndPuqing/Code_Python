@@ -1,0 +1,6 @@
+<view>
+    <van-cell-group>
+        <van-cell isLink bindtap="goGroup" data-id="{{item.id}}" title="{{item.name}}" value="{{item.data.unit_count||0}}个单元共{{item.data.household_count||0}}户" wx:for="{{groups}}" wx:key="index"></van-cell>
+    </van-cell-group>
+    <view bindtap="getMore" style="text-align:center;border-top:1rpx solid #f2f2f2;padding:30rpx;background:#fff" wx:if="{{hasmore}}">加载更多</view>
+</view>

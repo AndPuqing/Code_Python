@@ -1,0 +1,12 @@
+<view class="card-box" slot="title">
+    <view class="card-box_title">
+		{{title}}
+	</view>
+    <view class="card-box_desc">
+		{{subtitle}}
+	</view>
+    <view class="card-box_subtitle">
+		签发日期：{{minititle}}
+	</view>
+    <view></view>
+</view>

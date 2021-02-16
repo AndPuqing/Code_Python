@@ -1,0 +1,10 @@
+<view>
+    <van-search bind:change="searchChange" placeholder="请输入搜索关键词"></van-search>
+    <view>
+        <van-cell-group>
+            <van-cell isLink bind:click="chooseGroup" data-group="{{item}}" title="{{item.name}}" wx:for="{{list}}" wx:key="index"></van-cell>
+        </van-cell-group>
+        <view bindtap="getmoreList" style="text-align:center;font-size:36rpx;padding:30rpx" wx:if="{{hasmore}}">点击加载更多</view>
+    </view>
+</view>
+<van-toast id="van-toast"></van-toast>

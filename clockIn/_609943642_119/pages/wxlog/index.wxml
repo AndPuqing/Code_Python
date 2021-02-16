@@ -1,0 +1,18 @@
+<page-title-bottom withoutPadding style="background:#fff" title="技术支持：广西智度信息科技有限公司">
+    <view class="userinfo">
+        <view class="userinfo-img">
+            <view class="text-center">
+                <image src="{{userInfo.avatarUrl?userInfo.avatarUrl:'/static/userinfo.png'}}" style="width:200rpx;height:200rpx;border-radius:50%;border: 1rpx solid #108ee9;"></image>
+            </view>
+        </view>
+        <view class="userinfo-btn" wx:if="{{!islogin}}">
+            <van-button block bind:getuserinfo="onGotUserInfo" bindlongtap="" customClass="demo-margin-bottom" openType="getUserInfo" size="large" type="primary">
+                <text class="iconfont icon-wei-xin-dao-hang" style="margin-right:16rpx"></text>微信登录</van-button>
+        </view>
+        <view style="text-align:center;font-size:28rpx;padding:30rpx" wx:if="{{!islogin}}">
+            <van-button block bind:click="cancalLogin" customClass="demo-margin-bottom" size="large" type="default">暂不登录</van-button>
+        </view>
+        <view style="text-align:center;font-size:14px;" wx:if="{{islogin}}">正在跳转...</view>
+    </view>
+    <van-toast id="van-toast"></van-toast>
+</page-title-bottom>

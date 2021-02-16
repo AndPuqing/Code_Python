@@ -1,0 +1,132 @@
+<view style="margin-bottom:15rpx">
+    <view class="panel" wx:if="{{!error&&house.id}}">
+        <view class="panel-body">
+            <view class="title">{{house.building.name}} </view>
+            <view class="title">{{house.name}}</view>
+            <view class="subtitle" wx:if="{{house.user}}">班主任:{{house.user.name}}</view>
+            <view class="panel-stat" wx:if="{{stat.person_count}}">
+                <van-row>
+                    <van-col span="8">
+                        <view class="stat"> {{stat.person_count}}</view>
+                        <view class="substat">班级人数</view>
+                    </van-col>
+                    <van-col span="8">
+                        <view class="stat">{{stat.person_bound_count}}</view>
+                        <view class="substat">已注册</view>
+                    </van-col>
+                    <van-col span="8">
+                        <view class="stat">{{stat.person_unbound_count}}</view>
+                        <view class="substat">未注册</view>
+                    </van-col>
+                </van-row>
+            </view>
+        </view>
+    </view>
+    <view style="margin:30rpx;background:#fff;padding: 30rpx;border-radius: 8rpx;" wx:if="{{desc}}">
+        <text style="font-weight:bold">通知：</text>{{desc}}</view>
+    <view wx:if="{{house.user.id==selfid}}">
+        <view bindtap="goapply" class="panel-card" hoverClass="hover">加入班级申请审核</view>
+        <view bindtap="godetail" class="panel-card" hoverClass="hover">查看班级情况</view>
+        <view class="btn">
+            <van-button openType="share" size="large" type="primary">分享到微信群</van-button>
+        </view>
+    </view>
+    <view bindtap="goLeaveSchool" class="panel-card" hoverClass="hover" wx:if="{{house.id&&house.user.id!=selfid}}">离校申请</view>
+    <view bindtap="goLeave" class="panel-card" hoverClass="hover" wx:if="{{house.id&&house.user.id!=selfid}}">请假申请</view>
+    <view class="panel-card" style="color:#09BA07;font-size:36rpx;" wx:if="{{add&&house.user.id!=selfid}}">{{student.name}}同学，您已成功加入{{house.building.name}} {{house.name}}！</view>
+    <task steps="{{steps}}" wx:if="{{!add&&!loading&&(house.id&&house.user.id!=selfid||!house.id)}}"></task>
+    <passport bind:change="getMyPass" hid="{{house.id}}" passes="{{passes}}" wx:if="{{passes.length>0&&house.id}}"></passport>
+    <view style="margin:30rpx">
+        <van-collapse bind:change="onChangecollapse" value="{{activeNames2}}">
+            <van-collapse-item name="1" wx:if="{{list.length>0}}">
+                <view class="collapse" slot="title">行程记录</view>
+                <view style="margin:0 30rpx;border-bottom:1rpx solid #f2f2f2;padding:30rpx 0;font-size:30rpx" wx:for="{{list}}" wx:key="index">
+                    <view class="flex">
+                        <view class="flex1">{{item.start.location}}</view>
+                        <view class="flex1" style="text-align:center;color:#666">
+                            <view>{{item.type}}</view>
+                            <view wx:if="{{item.train_number}}">{{item.train_number}}</view>
+                            <view style="font-siz:32rpx">{{item.dayTxt}}</view>
+                            <view style="font-siz:32rpx">{{item.end.station}}</view>
+                        </view>
+                        <view class="flex1">{{item.end.location}}</view>
+                    </view>
+                    <view style="margin-top:20rpx" wx:if="{{item.end.timeTxt}}">
+							到达时间：{{item.end.timeTxt}}
+						</view>
+                    <view style="margin-top:20rpx" wx:if="{{item.members.length>0}}">
+							同行：
+							<van-tag plain round size="medium" style="{{i>0?'margin-left:20rpx':''}}" wx:for="{{item.members}}" wx:for-index="i" wx:for-item="v" wx:key="i">{{v.name?v.name:v.user.name}}</van-tag>
+                    </view>
+                    <view style="margin-top:20rpx" wx:if="{{item.stopovers.length>0}}">
+							途径：
+							<van-tag plain round size="medium" style="{{i>0?'margin-left:20rpx':''}}" wx:for="{{item.stopovers}}" wx:for-index="i" wx:for-item="v" wx:key="i">{{v.location}}</van-tag>
+                    </view>
+                    <view style="text-align:right;margin-top:10rpx">
+                        <van-button bind:click="goitineraryDetail" customClass="btn2" data-id="{{item.id}}" size="small">编辑</van-button>
+                        <van-button bind:click="deletItem" data-id="{{item.id}}" size="small" wx:if="{{!house.id}}">删除</van-button>
+                    </view>
+                </view>
+            </van-collapse-item>
+            <van-collapse-item name="2">
+                <view class="collapse" slot="title">我的通信大数据行程卡信息</view>
+                <van-cell isLink bindtap="previewImage2" data-url="{{itinerary.url}}" title="我的行程卡" titleClass="vantitle" titleWidth="200rpx" value="{{itinerary.url?'已上传':'未上传'}}"></van-cell>
+                <van-cell title="手机号" titleClass="vantitle" titleWidth="200rpx" value="{{itinerary.result.phone}}" wx:if="{{itinerary.result}}"></van-cell>
+                <van-cell title="行程卡颜色" titleClass="vantitle" titleWidth="200rpx" value="{{itinerary.result.color}}" wx:if="{{itinerary.result}}"></van-cell>
+                <van-cell title="更新时间" titleClass="vantitle" titleWidth="200rpx" value="{{itinerary.result.updateTxt}}" wx:if="{{itinerary.result}}"></van-cell>
+                <van-cell title="14天内到达的城市" titleClass="vantitle" titleWidth="280rpx" wx:if="{{itinerary.result}}">
+                    <view style="font-size:24rpx" wx:for="{{itinerary.result.cities}}" wx:key="{{index}}">{{item}}</view>
+                </van-cell>
+                <van-cell title="是否匹配成功" titleClass="vantitle" titleWidth="450rpx" value="{{itinerary.result.success?'成功':'未成功'}}" wx:if="{{itinerary.result}}"></van-cell>
+                <view style="padding:15rpx 0;text-align:right">
+                    <van-button bindtap="goCardDetail" size="small" type="primary">重新上传</van-button>
+                </view>
+            </van-collapse-item>
+        </van-collapse>
+    </view>
+    <view style="margin:30rpx" wx:if="{{apply.length>0}}">
+        <van-collapse bind:change="onChange" value="{{activeNames}}">
+            <van-collapse-item name="1">
+                <view class="collapse" slot="title">注册申请记录</view>
+                <van-cell useLabelSlot title="{{item.student_id}} {{item.name}}" titleClass="vantitle" titleWidth="450rpx" wx:for="{{apply}}" wx:key="index">
+                    <view style="height:100%;display:flex;align-items:center">
+                        <view style="width:100%;text-align:right;color:{{item.state==1?'green':'red'}}">{{CommunityHouseholdApplicationStateEnums[item.state]}}
+							</view>
+                    </view>
+                    <view slot="label" style="font-size:28rpx">
+                        <view>班级：{{item.group.name}} {{item.building.name}} {{item.household.no}}</view>
+                        <view>申请时间：{{item.createdTxt}}</view>
+                        <view wx:if="{{item.desc}}">说明：{{item.desc}}</view>
+                        <view style="color:red" wx:if="{{item.state==2&&item.last_log}}">拒绝原因：{{item.last_log.desc}}</view>
+                    </view>
+                </van-cell>
+            </van-collapse-item>
+        </van-collapse>
+    </view>
+    <view style="margin:30rpx" wx:if="{{leaveapply.length>0}}">
+        <van-collapse bind:change="onChange1" value="{{activeNames1}}">
+            <van-collapse-item name="1">
+                <view class="collapse" slot="title">离校返校申请记录</view>
+                <van-cell useLabelSlot title="{{item.student_id}} {{item.name}} {{CommunityLeaveSchoolApplicationTypeEnums[item.type]}}申请" titleClass="vantitle" titleWidth="450rpx" wx:for="{{leaveapply}}" wx:key="index">
+                    <view style="height:100%;display:flex;align-items:center">
+                        <view style="width:100%;text-align:right;color:{{item.state==1?'green':'red'}}">{{CommunityHouseholdApplicationStateEnums[item.state]}}
+							</view>
+                    </view>
+                    <view slot="label" style="font-size:28rpx">
+                        <view>班级：{{item.group.name}} {{item.building.name}} {{item.household.no}} </view>
+                        <view>申请时间：{{item.createdTxt}}</view>
+                        <view wx:if="{{item.desc}}">说明：{{item.desc}}</view>
+                        <view style="color:red" wx:if="{{item.state==2&&item.last_log}}">拒绝原因：{{item.last_log.desc}}</view>
+                    </view>
+                </van-cell>
+            </van-collapse-item>
+        </van-collapse>
+    </view>
+</view>
+<view bindtap="inintData" class="panel" style="padding:30rpx" wx:if="{{error}}">
+    <view class="panel-wigdet">
+		服务器开了一个小差，请点击此处刷新或者稍后重试
+	</view>
+</view>
+<van-toast id="van-toast"></van-toast>
+<van-dialog id="van-dialog"></van-dialog>

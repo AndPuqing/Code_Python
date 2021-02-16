@@ -1,0 +1,30 @@
+<view>
+    <form bindsubmit="save">
+        <van-cell isLink bind:click="toggle" title="证件类型" value="{{zjzldm.name}}"></van-cell>
+        <van-field bindblur="getdata" border="{{true}}" data-type="xm" label="姓名" name="xm" placeholder="请输入姓名" type="text" value="{{self.name}}"></van-field>
+        <van-field bindblur="getdata" border="{{true}}" data-type="zjhm" label="证件号" name="zjhm" placeholder="请输入身份证号" type="idcard" value="{{self.idcard}}"></van-field>
+        <view wx:if="{{zjzldm.type==1}}">
+            <van-radio-group bind:change="onChange" value="{{radio}}">
+                <view class=" radio-box flex">
+                    <view class="flex1">
+                        <van-radio labelDisabled name="0">
+                            <text bindtap="onClick" data-name="0">读数字核验</text>
+                        </van-radio>
+                    </view>
+                    <view class="flex1">
+                        <van-radio labelDisabled name="1">
+                            <text bindtap="onClick" data-name="1">屏幕闪烁核验</text>
+                        </van-radio>
+                    </view>
+                </view>
+            </van-radio-group>
+        </view>
+        <view style="font-size:28rpx;color:red;padding:15rpx 30rpx 0 30rpx">注意：为了避免影响您的出行，请务必使用您的真实的个人信息进行申领健康码,系统会对您的个人私密信息进行保护。</view>
+        <view class="panel-btn ">
+            <button class="btn" formType="submit">领取广西健康码</button>
+        </view>
+    </form>
+</view>
+<van-action-sheet actions="{{actions}}" bind:close="toggle" bind:select="onSelect" closeOnClickOverlay="{{true}}" show="{{show}}" zIndex="{{10000}}"></van-action-sheet>
+<van-dialog id="van-dialog"></van-dialog>
+<van-toast id="van-toast"></van-toast>

@@ -1,0 +1,129 @@
+<view class="contain">
+    <view class="index__top" style="height:160rpx;background: #09BA07 {{key=='ncov'?'url(https://mlh.suease.com/yqfk/static/banner.png)':''}} no-repeat right;background-attachment: scroll;background-size:contain;">
+        <view class="data">
+            <van-row>
+                <van-col bindtap="goUrl" data-url="/pages/passLog/index" span="8">
+                    <view class="data-title">出行</view>
+                    <view class="data-num">{{data.log_count||0}}</view>
+                    <view class="data-title">次</view>
+                </van-col>
+                <van-col bindtap="goUrl" data-url="/pages/passLog/index" span="8">
+                    <view class="data-title">扫码点</view>
+                    <view class="data-num">{{data.place_count||0}}</view>
+                    <view class="data-title">个</view>
+                </van-col>
+                <van-col bindtap="gotabbar" data-url="/pages/healthLine/index" span="8">
+                    <view class="data-title">健康打卡</view>
+                    <view class="data-num">{{data.health_day||0}}</view>
+                    <view class="data-title">天</view>
+                </van-col>
+            </van-row>
+        </view>
+    </view>
+    <view class="body">
+        <view class="card">
+            <view bindtap="goUrl" class="flex card-item" data-url="/pages/samCode/index">
+                <view class="card-item_icon">
+                    <text class="iconfont icon-erweima1"></text>
+                </view>
+                <view class="flex1">
+                    <view class="card-item_title">健康码</view>
+                    <view class="card-item_desc">绿、黄、红三色码展示健康情况，申领通行证。</view>
+                </view>
+            </view>
+            <view bindtap="goUrl" class="flex card-item" data-url="/pages/healthLineAdd/index?id={{self.id}}">
+                <view class="card-item_icon">
+                    <text class="iconfont icon-xinheart"></text>
+                </view>
+                <view class="flex1">
+                    <view class="card-item_title">健康自查上报</view>
+                    <view class="card-item_desc">普查健康状况，对特定症状由网络员安排相关服务。</view>
+                </view>
+            </view>
+            <view bindtap="goUrl" class="flex card-item" data-url="/pages/lingwebview/index" style="margin-bottom:0" wx:if="{{key=='ncov'}}">
+                <view class="card-item_icon">
+                    <text class="iconfont icon-ling"></text>
+                </view>
+                <view class="flex1">
+                    <view class="card-item_title">申领公共场所二维码</view>
+                    <view class="card-item_desc">公共场所管理者或经营业主可申请获取二维码并张贴。</view>
+                </view>
+            </view>
+        </view>
+        <view>
+            <steps show="{{show}}"></steps>
+        </view>
+        <view bindtap="goUrl" data-url="/pages/householdRestaurantFlow/index" style="font-size:36rpx;text-align:center;background:#fff;padding:30rpx;margin:30rpx" wx:if="{{key=='guet'}}">查看食堂流量监控</view>
+        <view class="news" wx:if="{{cityNew.length>0&&key=='ncov'}}">
+            <view class="news-title flex">
+                <view class="flex1">
+					全县公告
+				</view>
+                <view bindtap="goNewsList" data-cid="5e52abb679e0190001035b65">
+					查看更多
+				</view>
+            </view>
+            <new bindtap="goDetail" data-item="{{item}}" desc="{{item.desc}}" time="{{item.createdTxt}}" title="{{item.title}}" wx:for="{{cityNew}}" wx:key="index"></new>
+        </view>
+        <householdList show="{{show}}"></householdList>
+        <view class="" wx:if="{{list.length>0}}">
+            <view class="news-title flex">
+                <view class="flex1">
+					最新出行轨迹
+				</view>
+                <view bindtap="goPassLog">
+					查看更多
+				</view>
+            </view>
+            <view style="background:#fff;padding:30rpx;border-bottom:1rpx solid #f2f2f2;line-height:40rpx;margin:0 30rpx" wx:for="{{list}}" wx:key="index">
+                <view class="flex">
+                    <view class="flex1" style="font-size:34rpx">{{item.group.name}}</view>
+                    <view style="font-size:28rpx;color:#666">{{item.createdTxt}}</view>
+                </view>
+                <view style="margin-top:20rpx">
+                    <van-tag plain round size="medium" style="{{i>0?'margin-left:20rpx':''}}" wx:for="{{item.flagsTags}}" wx:for-index="i" wx:for-item="v" wx:key="i">{{v}}</van-tag>
+                </view>
+            </view>
+        </view>
+        <view class="copyright" wx:if="{{key=='ncov'}}">
+            <view>
+				本服务由横县人民政府提供
+			</view>
+            <view class="flex-wrp">
+                <view class="flex-item" style="text-align:right;">
+                    <view>桂林电子科技大学</view>
+                    <view>广西智度信息科技有限公司</view>
+                </view>
+                <view class="flex-item" style="text-align:left;margin-left:10rpx;">共同技术支持</view>
+            </view>
+        </view>
+        <view class="copyright" wx:if="{{key!='ncov'}}">
+            <view>
+				本服务由桂林电子科技大学提供
+			</view>
+            <view class="flex-wrp">
+                <view class="flex-item">
+                    <view>广西智度信息科技有限公司提供技术支持</view>
+                </view>
+            </view>
+        </view>
+    </view>
+</view>
+<van-dialog useSlot bind:close="confirUserName" show="{{!confirUserName}}" showConfirmButton="{{false}}">
+    <view style="margin:20rpx">
+        <form bindsubmit="saveName">
+            <view style="font-size:28rpx;color:#888;padding:0 30rpx">为了便于审核，需要登记您的真实姓名，请确认姓名是否正确。</view>
+            <van-field label="真实姓名" name="name" placeholder="请输入真实姓名" value="{{self.name}}"></van-field>
+            <view style="display:flex;text-align:center;padding:20rpx 0">
+                <view class="flex1">
+                    <van-button bind:click="confirUserName" customClass="btn" data-type="close">取 消</van-button>
+                </view>
+                <view class="flex1">
+                    <button class="submitbtn" formType="submit" type="primary">确定</button>
+                </view>
+            </view>
+        </form>
+    </view>
+</van-dialog>
+<van-toast id="van-toast"></van-toast>
+<van-dialog id="van-dialog"></van-dialog>

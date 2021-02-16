@@ -1,0 +1,16 @@
+<view class="phoneLogCode">
+    <view class="font64 text-center" style="color:#666">请输入验证码</view>
+    <view class="font34 text-center fontw200" style="color:#aaa">已发送至{{phone}}</view>
+    <view class=" text-center" style="padding:60rpx;display:flex;justify-content:center;">
+    
+    <input adjustPosition="true" bindinput="listenKeyInput" class="key-input" confirmType="done" focus="{{isFocus}}" type="number" value="{{inputValue}}"></input>
+        <view catchtap="openKeyboard" class="verify-view">
+            <view class="verify-input-view {{index==0?'verify-input-view-first':''}}" wx:for="{{codes}}" wx:for-item="code" wx:key="codeKey">
+                <text class="verify-text">{{code}}</text>
+            </view>
+        </view>
+    </view>
+    <view class="font34 text-center fontw200" style="color:#666;padding:10rpx" wx:if="{{sendType}}">{{second}}秒后重新发送</view>
+    <view bindtap="sendCode" class="font34 text-center fontw200" hoverClass="hover" style="color:#666;padding:10rpx" wx:if="{{!sendType}}">点击重新发送验证码</view>
+    <van-toast id="van-toast"></van-toast>
+</view>

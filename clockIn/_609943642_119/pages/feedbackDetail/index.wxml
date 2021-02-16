@@ -1,0 +1,41 @@
+<view>
+    <van-cell-group>
+        <van-cell title="问题标题" value="{{detail.title}}"></van-cell>
+        <van-cell title="问题描述" value="{{detail.contents}}"></van-cell>
+        <van-cell title="提交日期" value="{{detail.createdTxt}}"></van-cell>
+        <van-cell title="处理状态" value="{{HelpFeedbackStateEnums[detail.state]}}"></van-cell>
+        <view class="imgs" wx:if="{{detail.imgs.length>0}}">
+            <image bindtap="previewImage2" data-img="{{item}}" data-imgs="{{detail.imgs}}" src="{{item}}" style="width:150rpx;height:150rpx;margin-right:10rpx" wx:for="{{detail.imgs}}" wx:key="index"></image>
+        </view>
+    </van-cell-group>
+    <van-cell-group title="回复记录">
+        <van-cell wx:for="{{review}}" wx:key="index">
+            <view slot="title">
+                <view class="flex">
+                    <view>
+                        <image src="{{item.user.photo}}" style="width:100rpx;height:100rpx"></image>
+                    </view>
+                    <view class="flex1" style="margin-left:10rpx">
+                        <view style="font-size:28rpx;color:#888">{{item.user.name}} {{item.timeTxt}}前</view>
+                        <view>{{item.contents}}</view>
+                    </view>
+                </view>
+                <view class="imgs" wx:if="{{item.imgs.length>0}}">
+                    <image bindtap="previewImage2" data-img="{{v}}" data-imgs="{{item.imgs}}" src="{{v}}" style="width:150rpx;height:150rpx;margin-right:10rpx" wx:for="{{item.imgs}}" wx:for-index="i" wx:for-item="v" wx:key="i"></image>
+                </view>
+            </view>
+        </van-cell>
+    </van-cell-group>
+    <view>
+        <view>
+            <van-field autosize maxlength: bind:input="getTextareaValue" customStyle="min-height:40px" inputClass="input-class" placeholder="在这里输入回复内容" placeholderStyle="font-size:32rpx;" rows="1" style="height:50px" type="textarea"></van-field>
+        </view>
+        <view style="background:#fff">
+            <camera bindchange="getImgs" imgs="{{imgs}}" type="camera"></camera>
+        </view>
+        <view class="panel-btn">
+            <van-button block bind:click="save" customClass="demo-margin-bottom" size="large" type="primary">
+				回复</van-button>
+        </view>
+    </view>
+</view>

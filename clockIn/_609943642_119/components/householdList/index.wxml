@@ -1,0 +1,53 @@
+<view class="panel" wx:if="{{house.group.type==2020020701||house.group.type==2020020704}}" wx:for="{{household}}" wx:for-index="in" wx:for-item="house" wx:key="in">
+    <view class="card">
+        <view class="card-title">
+            <view style="flex:1">{{house.group.name}}
+					{{house.building.name}} {{house.unit_name}} {{house.name}}</view>
+            <view bindtap="toggle" class="card-add" data-active="{{house}}">添加成员</view>
+        </view>
+        <view class="card-box" wx:for="{{house.members}}" wx:key="index">
+            <view class="card-name">
+                <view class="flex" style="width:100%;">
+                    <view class="flex1" style="font-size:30rpx">
+                        <image src="{{item.user.photo}}" style="width:60rpx;height:60rpx;vertical-align:middle;margin-right:10rpx" wx:if="{{item.user.photo}}"></image>{{item.name}}<text wx:if="{{item.tag}}">（{{item.tag}}）</text>
+                        <text style="margin-left:10rpx;font-size:28rpx;color:#666;line-height:50rpx" wx:if="{{item.health.timeTxt}}">{{item.health.timeTxt}}前</text>
+                    </view>
+                    <view wx:if="{{item.uid==meid}}">
+                        <van-button bind:click="qiutHouse" data-hid="{{house.id}}" size="small">我不在该房间，退出</van-button>
+                    </view>
+                </view>
+            </view>
+            <view class="card-desc">
+                <healthTags health="{{item.health}}"></healthTags>
+            </view>
+            <view style="text-align:right;margin-top:20rpx">
+                <van-button bind:click="deleteUser" data-index="{{index}}" data-item="{{house}}" size="small" style="margin-right:30rpx">删除</van-button>
+                <van-button bind:click="resetUser" data-active="{{house}}" data-house="{{house}}" data-index="{{index}}" data-parentindex="{{in}}" data-user="{{item}}" size="small" style="margin-right:30rpx">编辑</van-button>
+                <van-button data-house="{{house}}" openType="share" size="small" style="margin-right:30rpx" wx:if="{{!item.uid}}">邀请加入</van-button>
+                <van-button bind:click="goAddItinerary" data-id="{{item.uid}}" size="small" style="margin-right:30rpx" wx:if="{{item.uid}}">填足迹</van-button>
+                <van-button bind:click="goAddHealth" data-hid="{{house.id}}" data-id="{{item.uid}}" data-name="{{item.name}}" data-phone="{{item.phone}}" size="small">报健康</van-button>
+            </view>
+        </view>
+    </view>
+</view>
+<van-dialog useSlot bind:close="toggle" show="{{vanshow}}" showConfirmButton="{{false}}" title="{{userType?'修改':'添加'}}家庭成员">
+    <view style="margin:20rpx">
+        <form bindsubmit="save">
+            <van-cell isLink bind:click="toggleSheet" title="居住地址" value="{{active.name}}" wx:if="{{!userType}}"></van-cell>
+            <van-field label="真实姓名" name="name" placeholder="请输入真实姓名" value="{{name}}"></van-field>
+            <van-field label="手机号" name="phone" placeholder="请输入手机号" value="{{phone}}"></van-field>
+            <van-cell isLink bind:click="toggleRelation" title="亲属关系" value="{{relation.name}}"></van-cell>
+            <view style="display:flex;text-align:center;padding:20rpx 0">
+                <view class="flex1">
+                    <van-button bind:click="toggle" customClass="btn" data-type="close" type="danger">取 消</van-button>
+                </view>
+                <view class="flex1">
+                    <button class="submitbtn" formType="submit" type="primary">确定</button>
+                </view>
+            </view>
+        </form>
+    </view>
+</van-dialog>
+<van-action-sheet actions="{{relations}}" bind:close="toggleRelation" bind:select="onrelationSelect" closeOnClickOverlay="{{true}}" show="{{relationshow}}" zIndex="{{10000}}"></van-action-sheet>
+<van-toast id="van-toast"></van-toast>
+<van-dialog id="van-dialog"></van-dialog>

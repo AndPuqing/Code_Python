@@ -1,0 +1,30 @@
+<block wx:for="{{nodes}}" wx:key="index">
+    <rich-text bindlongpress="imglongtap" bindtap="imgtap" class="_img" data-attrs="{{item.attrs}}" id="{{item.attrs.id}}" nodes="{{handler.getNode(item,imgLoad)}}" style="text-indent:0;{{handler.getStyle(item.attrs.style,'inline-block')}}" wx:if="{{item.name=='img'}}"></rich-text>
+    <block wx:elif="{{item.type=='text'}}">
+        <text wx:if="{{!item.decode}}">{{item.text}}</text>
+        <rich-text nodes="{{[item]}}" style="display:inline-block" wx:else></rich-text>
+    </block>
+    <text wx:elif="{{item.name=='br'}}">
+</text>
+    <view bindtap="linkpress" class="_a {{item.attrs.class}}" data-attrs="{{item.attrs}}" hoverClass="navigator-hover" style="{{item.attrs.style}}" wx:elif="{{item.name=='a'}}">
+        <trees class="_node" nodes="{{item.children}}"></trees>
+    </view>
+    <block wx:elif="{{item.name=='video'}}">
+        <view bindtap="loadVideo" class="_video {{item.attrs.class}}" id="{{item.attrs.id}}" style="{{item.attrs.style}}" wx:if="{{item.lazyLoad&&!controls[item.attrs.id].play}}"></view>
+        <video autoplay="{{item.attrs.autoplay||controls[item.attrs.id].play}}" binderror="videoError" bindplay="play" class="{{item.attrs.class}}" controls="{{item.attrs.controls}}" data-source="{{item.attrs.source}}" id="{{item.attrs.id}}" loop="{{item.attrs.loop}}" muted="{{item.attrs.muted}}" poster="{{item.attrs.poster}}" src="{{controls[item.attrs.id]?item.attrs.source[controls[item.attrs.id].index]:item.attrs.src}}" style="{{item.attrs.style}}" unitId="{{item.attrs['unit-id']}}" wx:else></video>
+    </block>
+    <audio author="{{item.attrs.author}}" binderror="audioError" class="{{item.attrs.class}}" controls="{{item.attrs.controls}}" data-source="{{item.attrs.source}}" id="{{item.attrs.id}}" loop="{{item.attrs.loop}}" name="{{item.attrs.name}}" poster="{{item.attrs.poster}}" src="{{controls[item.attrs.id]?item.attrs.source[controls[item.attrs.id].index]:item.attrs.src}}" style="{{item.attrs.style}}" wx:elif="{{item.name=='audio'}}"></audio>
+    <ad binderror="adError" class="{{item.attrs.class}}" style="{{item.attrs.style}}" unitId="{{item.attrs['unit-id']}}" wx:elif="{{item.name=='ad'}}"></ad>
+    <view class="{{item.attrs.class}} _li" style="{{item.attrs.style}};display:flex" wx:elif="{{item.name=='li'}}">
+        <view class="_ol-before" wx:if="{{item.type=='ol'}}">{{item.num}}</view>
+        <view class="_ul-before" wx:else>
+            <view class="_ul-type1" wx:if="{{item.floor%3==0}}">█</view>
+            <view class="_ul-type2" wx:elif="{{item.floor%3==2}}"></view>
+            <view class="_ul-type1" style="border-radius:50%" wx:else>█</view>
+        </view>
+        <trees class="_node" controls="{{controls}}" nodes="{{item.children}}" style="display:block"></trees>
+    </view>
+    <rich-text class="__{{item.name}}" id="{{item.attrs.id}}" nodes="{{[item]}}" style="{{handler.getStyle(item.attrs.style,'block')}}" wx:elif="{{handler.useRichText(item)}}"></rich-text>
+    <trees class="_node _{{item.name}} {{item.attrs.class}}" controls="{{controls}}" id="{{item.attrs.id}}" nodes="{{item.children}}" style="{{item.attrs.style}}" wx:else></trees>
+</block>
+<wxs module="handler" src="handler.wxs" />

@@ -1,0 +1,59 @@
+<view wx:if="{{house.id}}">
+    <view class="panel" wx:if="{{!error}}">
+        <view class="panel-body">
+            <view class="title">{{house.group.name}} {{house.building.name}} {{house.name}}</view>
+            <view class="subtitle" wx:if="{{house.user}}">班主任:{{house.user.name}}</view>
+            <view class="panel-stat" wx:if="{{stat.person_count}}">
+                <van-row>
+                    <van-col span="8">
+                        <view class="stat"> {{stat.person_count}}</view>
+                        <view class="substat">班级人数</view>
+                    </van-col>
+                    <van-col span="8">
+                        <view class="stat">{{stat.person_bound_count}}</view>
+                        <view class="substat">已加入</view>
+                    </van-col>
+                    <van-col span="8">
+                        <view class="stat">{{stat.person_unbound_count}}</view>
+                        <view class="substat">未加入</view>
+                    </van-col>
+                </van-row>
+            </view>
+        </view>
+    </view>
+    <view wx:if="{{house.user.id==selfid}}">
+        <view bindtap="goapply" class="panel-card" hoverClass="hover">加入班级申请审核</view>
+        <view bindtap="godetail" class="panel-card" hoverClass="hover">查看班级情况</view>
+        <view class="btn">
+            <van-button openType="share" size="large" type="primary">分享到微信群</van-button>
+        </view>
+    </view>
+    <view class="panel-card" style="color:#09BA07;font-size:36rpx;" wx:if="{{add&&house.user.id!=selfid}}">{{student.name}}同学，您已成功加入班级！</view>
+    <task steps="{{steps}}" wx:if="{{!add&&!loading}}"></task>
+    <passport passes="{{passes}}" wx:if="{{passes.length>0}}"></passport>
+    <view style="margin:30rpx" wx:if="{{apply.length>0}}">
+        <van-collapse bind:change="onChange" value="{{activeNames}}">
+            <van-collapse-item name="1">
+                <view class="collapse" slot="title">申请记录</view>
+                <van-cell useLabelSlot title="{{item.student_id}} {{item.name}}" titleClass="vantitle" titleWidth="450rpx" wx:for="{{apply}}" wx:key="index">
+                    <view style="height:100%;display:flex;align-items:center">
+                        <view style="width:100%;text-align:right;color:{{item.state==1?'green':'red'}}">{{CommunityHouseholdApplicationStateEnums[item.state]}}
+							</view>
+                    </view>
+                    <view slot="label" style="font-size:28rpx">
+                        <view>班级：{{item.group.name}} {{item.building.name}} {{item.household.no}}</view>
+                        <view>申请时间：{{item.createdTxt}}</view>
+                        <view wx:if="{{item.desc}}">说明：{{item.desc}}</view>
+                    </view>
+                </van-cell>
+            </van-collapse-item>
+        </van-collapse>
+    </view>
+</view>
+<view bindtap="inintData" class="panel" style="padding:30rpx" wx:if="{{error}}">
+    <view class="panel-wigdet">
+		服务器开了一个小差，请点击此处刷新或者稍后重试
+	</view>
+</view>
+<van-toast id="van-toast"></van-toast>
+<van-dialog id="van-dialog"></van-dialog>

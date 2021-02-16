@@ -1,0 +1,22 @@
+<view class="panel" style="margin:30rpx;" wx:if="{{passes.length>0}}">
+    <view style="background:#fff;padding:15rpx 30rpx;" wx:if="{{title}}">{{title}}</view>
+    <van-collapse bind:change="onChange" value="{{activeNames}}">
+        <van-collapse-item name="{{index}}" title="" wx:for="{{passes}}" wx:key="index">
+            <view slot="title">
+                <van-tag type="danger" wx:if="{{item.state==0&&!item.id}}">可申请</van-tag>
+                <van-tag type="success" wx:if="{{item.id}}">{{CommunityHouseholdApplicationStateEnums[item.state]}}</van-tag>
+					{{item.group.name}}{{item.household.no}}{{item.name}}
+				</view>
+            <text style="font-size:28rpx;color:#666">{{item.desc}}</text>
+            <view style="color:#353535;margin:30rpx 0;" wx:if="{{item.bindings}}">已绑定的编号:
+					<van-tag plain round size="medium" style="{{index>0?'margin-left:20rpx':''}}" wx:for="{{item.bindings}}" wx:key="index">{{item.no}}</van-tag>
+            </view>
+            <view style="text-align:right;margin-top:20rpx">
+                <van-button bind:click="goUrl" data-url="/pages/passCardDetail/index?id={{item.id}}" size="small" style="margin-left:30rpx;margin-top:20rpx" wx:if="{{item.id&&item.state!=2}}">详情</van-button>
+                <van-button bind:click="goUrl" data-url="/pages/passLog/index?id={{item.id}}" size="small" style="margin-left:30rpx;margin-top:20rpx" wx:if="{{item.id&&item.state==1}}">使用记录</van-button>
+                <van-button bindtap="cancelItem" data-id="{{item.id}}" size="small" style="margin-left:30rpx;margin-top:20rpx" wx:if="{{item.id&&item.state!=1}}">注销</van-button>
+                <van-button bind:click="goApply" data-gid="{{item.groupid}}" data-id="{{item.cid}}" data-item="{{item}}" data-type="{{item.type}}" size="small" wx:if="{{!item.id&&item.state!=1}}">申请</van-button>
+            </view>
+        </van-collapse-item>
+    </van-collapse>
+</view>

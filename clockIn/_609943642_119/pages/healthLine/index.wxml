@@ -1,0 +1,31 @@
+<view>
+    <view class="health">
+        <view class="health-head">
+            <view style="flex:1">
+                <image src="{{active.photo}}" style="width:60rpx;height:60rpx;vertical-align:middle;margin-right:10rpx" wx:if="{{active.photo}}"></image>{{active.name}}
+			</view>
+            <view bindtap="toggleSheet" style="font-size:30rpx;line-height:60rpx">切换其他成员</view>
+        </view>
+        <view class="health-btn">
+            <van-button bind:click="dialogtoggle" size="large">+添加记录</van-button>
+        </view>
+        <view>
+            <view style="margin:0 30rpx;border-bottom:1rpx solid #f2f2f2;padding:30rpx 0" wx:for="{{list}}" wx:key="index">
+                <view class="flex">
+                    <view class="flex1">{{item.createdTxt}}</view>
+                    <view wx:if="{{item.data.body_temperature}}">{{item.data.body_temperature}}°</view>
+                </view>
+                <view style="margin-top:15rpx">
+                    <healthtags health="{{item.data}}"></healthtags>
+                </view>
+                <view style="text-align:right" wx:if="{{item.btn}}">
+                    <van-button bind:click="deletItem" data-id="{{item.id}}" size="small">删除</van-button>
+                </view>
+            </view>
+        </view>
+    </view>
+</view>
+<van-dialog useSlot bind:close="dialogtoggle" show="{{show}}" showConfirmButton="{{false}}" title="请选择"></van-dialog>
+<van-action-sheet actions="{{members}}" bind:close="toggleSheet" bind:select="select" closeOnClickOverlay="{{true}}" show="{{sheetshow}}"></van-action-sheet>
+<van-dialog id="van-dialog"></van-dialog>
+<van-toast id="van-toast"></van-toast>

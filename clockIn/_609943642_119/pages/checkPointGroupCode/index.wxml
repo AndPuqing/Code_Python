@@ -1,0 +1,9 @@
+<view>
+    <view style="margin:30rpx">
+        <van-button bind:click="save" size="large" type="primary">点击保存到手机</van-button>
+    </view>
+    <view style="display:flex;justify-content:center" wx:if="{{url}}">
+        <image src="{{url}}" style="height:1000rpx;width:600rpx;"></image>
+    </view>
+</view>
+<van-toast id="van-toast"></van-toast>

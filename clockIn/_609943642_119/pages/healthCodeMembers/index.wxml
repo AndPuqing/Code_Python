@@ -1,0 +1,19 @@
+<view class="contain">
+    <view bindtap="addMember" class="add">+新增成员</view>
+    <view class="add" wx:if="{{members.length==0}}">暂无家庭成员</view>
+    <view>
+        <view class="card" wx:for="{{members}}">
+            <view bindtap="goAddHealth" data-id="{{item.uid}}" style="flex:1">
+                <view class="title">{{item.cxm}}<van-tag plain size="medium" type="success">{{gx[item.gx].name}}</van-tag>
+                </view>
+                <view class="cardid">证件类型：{{zjzldm[item.cdm-1].name}}</view>
+                <view class="cardid">证件号码：{{item.bcid}}</view>
+            </view>
+            <view bindtap="deleteMember" data-item="{{item}}" style="color:#ee0a24;display:flex;justify-content:center;align-items:center">
+					删除
+				</view>
+        </view>
+    </view>
+</view>
+<van-toast id="van-toast"></van-toast>
+<van-dialog id="van-dialog"></van-dialog>

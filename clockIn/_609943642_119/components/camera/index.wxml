@@ -1,0 +1,49 @@
+<view class="imgs-box">
+    <view class="weui-uploader">
+        <view class="weui-uploader__bd ">
+            <van-row gutter="8">
+                <van-col customClass="dark" span="6" wx:if="{{!type||type=='camera'}}">
+                    <view class="weui-uploader__input-box" style="display:flex;justify-content:center">
+                        <view bindtap="chooseImg" class="weui-uploader__input_camer" hoverClass="hover" style="width:120rpx;height:120rpx;">
+                            <text class="iconfont icon-ziyuan" style="font-size:50rpx;"></text>
+                        </view>
+                    </view>
+                </van-col>
+                <van-col customClass="dark" span="6" wx:if="{{!type||type=='video'}}">
+                    <view class="weui-uploader__input-box" style="display:flex;justify-content:center">
+                        <view bindtap="chooseVideo" class="weui-uploader__input_camer" style="width:80%">
+                            <text class="iconfont icon-shexiang" style="font-size:40px;"></text>
+                            <view style="font-size:16px;">视频</view>
+                        </view>
+                    </view>
+                </van-col>
+                <van-col customClass="dark" span="6" wx:if="{{video}}">
+                    <view class="weui-uploader__files" id="uploaderFiles">
+                        <view class="weui-uploader__file" style="position: relative;margin-right: 10px;" wx:if="{{video}}">
+                            <video bindfullscreenchange="outFullscreen" bindplay="playVideo" class="weui-uploader__img" controls="{{true}}" id="myVideo" objectFit="contain" src="{{video}}"></video>
+                            <view class="weui-uploader__file-content" wx:if="{{upload_percent<100}}">
+                {{upload_percent}}%
+              </view>
+                            <view catchtap="delVid" class="weui-badge" data-index="{{index}}" data-t="maker" style="">
+                x
+              </view>
+                        </view>
+                    </view>
+                </van-col>
+                <van-col customClass="dark" span="6" wx:for="{{files}}" wx:key="*this">
+                    <view class="weui-uploader__files" id="uploaderFiles">
+                        <view bindtap="previewImage2" class="weui-uploader__file" id="{{item.img}}" style="position: relative;">
+                            <image class="weui-uploader__img" mode="aspectFill" src="{{item.img}}"></image>
+                            <view class="weui-uploader__file-content" wx:if="{{item.upload_percent<100}}">
+                  {{item.upload_percent}}%
+                </view>
+                            <view catchtap="delPic" class="weui-badge" data-index="{{index}}" data-t="maker" style="">
+                  x
+                </view>
+                        </view>
+                    </view>
+                </van-col>
+            </van-row>
+        </view>
+    </view>
+</view>

@@ -1,0 +1,6 @@
+<view bindtap="clipboar" class="card" data-data="{{item}}" wx:for="{{error}}" wx:key="index">
+    <view>定位：{{item.url}}</view>
+    <view>参数：{{item.param}}</view>
+    <view>error:{{item.content}}</view>
+</view>
+<view wx:if="{{error.length==0}}">暂无日志</view>

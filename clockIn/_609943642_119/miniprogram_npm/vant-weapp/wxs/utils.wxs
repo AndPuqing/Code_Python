@@ -1,0 +1,6 @@
+var bem = require('p_./miniprogram_npm/vant-weapp/wxs/bem.wxs')().bem;
+var memoize = require('p_./miniprogram_npm/vant-weapp/wxs/memoize.wxs')().memoize;
+module.exports = ({
+    bem: memoize(bem),
+    memoize: memoize,
+});

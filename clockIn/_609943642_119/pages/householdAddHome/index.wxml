@@ -1,0 +1,15 @@
+<view class="apply">
+    <view class="apply-title">新增房间</view>
+    <view class="apply-input">
+        <van-cell-group>
+            <form bindsubmit="save">
+                <van-field required label="房间名" name="name" placeholder="请输入房间名" value="{{self.name}}的房间"></van-field>
+                <van-field required label="门牌号" name="no" placeholder="请输入门牌号" value="{{no}}"></van-field>
+                <view class="panel-btn ">
+                    <button class="btn" formType="submit">添加</button>
+                </view>
+            </form>
+        </van-cell-group>
+    </view>
+</view>
+<van-toast id="van-toast"></van-toast>

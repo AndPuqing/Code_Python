@@ -1,0 +1,95 @@
+<view>
+    <view class="panel" style="margin-bottom:15rpx" wx:if="{{house}}">
+        <view class="panel-body">
+            <view class="panel-body_title">{{house.group.name}}{{house.name}}</view>
+            <view class="panel-body_subtitle" wx:if="{{house.user}}">班主任:{{house.user.name}}</view>
+            <view class="panel-stat" wx:if="{{house.data}}">
+                <van-row>
+                    <van-col bindtap="bindFiltertap" data-type="all" span="6">
+                        <view class="stat"> {{house.data.user_count||0}}</view>
+                        <view class="substat">班级人数</view>
+                    </van-col>
+                    <van-col bindtap="bindFiltertap" data-type="pass" span="6">
+                        <view class="stat">{{house.data.person_back_count||0}}</view>
+                        <view class="substat">已返校</view>
+                    </van-col>
+                    <van-col bindtap="bindFiltertap" data-type="uid_true" span="6">
+                        <view class="stat">{{house.data.person_bound_count||0}}</view>
+                        <view class="substat">已加入</view>
+                    </van-col>
+                    <van-col bindtap="bindFiltertap" data-type="uid_false" span="6">
+                        <view class="stat">{{house.data.person_unbound_count||0}}</view>
+                        <view class="substat">未加入</view>
+                    </van-col>
+                </van-row>
+            </view>
+        </view>
+    </view>
+    <view style="margin:15rpx 30rpx">
+        <van-collapse bind:change="onChange" value="{{activeNames}}">
+            <van-collapse-item disabled="{{!item.student_parent_users.length}}" isLink="{{item.student_parent_users.length>0}}" name="{{index}}" wx:for="{{members}}" wx:key="index">
+                <view class="title" slot="title">
+                    <view class="tflex">
+                        <view style="width:500rpx">{{item.student_id}} {{item.name}}</view>
+                        <view class="value {{item.user?'success':'fail'}}">{{item.user?'已注册':'未注册'}}</view>
+                    </view>
+                    <view class="label" wx:if="{{item.user}}">
+                        <view style="border: 1rpx solid #f2f2f2;margin-top:15rpx">
+                            <view style="padding: 15rpx 30rpx;border-bottom:1rpx solid #f2f2f2;font-size:30rpx">{{university?'学生':'家长'}}信息</view>
+                            <van-cell useLabelSlot title="姓名">
+                                <view>
+										{{item.user.name}}
+									</view>
+                            </van-cell>
+                            <van-cell title="手机号">
+                                <view>
+										{{item.phone}}
+									</view>
+                            </van-cell>
+                            <van-cell border="{{false}}" title="健康码状态">
+                                <view>
+                                    <view class="flex" wx:if="{{item.health_code.type==3}}">
+                                        <view class="block" style="margin-right:8rpx; background-color:#0c0"></view>{{colorType[item.health_code.type]}}
+										</view>
+                                    <view class="flex" wx:if="{{item.health_code.type==2}}">
+                                        <view class="block" style="margin-right:8rpx; background-color:#f90"></view>{{colorType[item.health_code.type]}}
+										</view>
+                                    <view class="flex" wx:if="{{item.health_code.type==1}}">
+                                        <view class="block" style="margin-right:8rpx; background-color:#f00"></view>{{colorType[item.health_code.type]}}
+										</view>
+                                </view>
+                            </van-cell>
+                            <van-cell title="扫码次数" wx:if="{{item.pass_stat}}">
+                                <view>
+										{{item.pass_stat.count}}
+									</view>
+                            </van-cell>
+                            <van-cell title="首次扫码" wx:if="{{item.pass_stat}}">
+                                <view>
+										{{item.pass_stat.first_timeTxt}}
+									</view>
+                            </van-cell>
+                            <van-cell title="最近扫码" wx:if="{{item.pass_stat}}">
+                                <view>
+										{{item.pass_stat.last_timeTxt}}
+									</view>
+                            </van-cell>
+                        </view>
+                    </view>
+                </view>
+                <view>
+                    <view style="border: 1rpx solid #f2f2f2;width:650rpx" wx:for="{{item.student_parent_users}}" wx:for-index="i" wx:for-item="v" wx:key="i">
+                        <view style="padding: 15rpx 30rpx;border-bottom:1rpx solid #f2f2f2;font-size:30rpx">{{university?'学生':'家长'}}信息</view>
+                        <van-cell useLabelSlot border="{{false}}" title="姓名">
+                            <view>
+                                <image src="{{v.photo}}" style="width:50rpx;height:50rpx;vertical-align: middle"></image>
+										{{v.name}}
+									</view>
+                        </van-cell>
+                    </view>
+                </view>
+            </van-collapse-item>
+        </van-collapse>
+    </view>
+</view>
+<van-toast id="van-toast"></van-toast>

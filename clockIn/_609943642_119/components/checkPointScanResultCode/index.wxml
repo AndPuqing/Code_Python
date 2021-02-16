@@ -1,0 +1,72 @@
+<view style="position:relative">
+    <view style="height:160rpx;background: #09BA07 {{key=='ncov'?'url(https://mlh.suease.com/yqfk/static/banner.png)':''}} no-repeat right;background-attachment: scroll;background-size:contain;text-align:center;line-height:70rpx">
+        <view style="font-size:40rpx;font-weight:bold;color:#fff">{{detail.group.name}}</view>
+    </view>
+    <view style="margin:30rpx;position:absolute;top:70rpx;border-radius:8rpx;width:690rpx">
+        <view class="card" style="margin-bottom:150rpx">
+            <view wx:if="{{key!='ncov'}}">
+                <view class="card-time">{{time}}:{{millisecond}}</view>
+                <view class="{{passable?'card-success':'card-no'}}" wx:if="{{!appshow&&!memberable}}">
+                    <image bindtap="previewImage2" data-img="{{photo}}" src="{{photo}}" style="width:180rpx;height:180rpx;margin:0 15rpx" wx:if="{{photo}}"></image>
+                    <view>{{name}}
+					 {{passable?'可以':'不能'}}通行
+					 </view>
+                </view>
+                <view class="{{detail.house?'card-success':'card-no'}}" wx:if="{{!appshow&&memberable}}">{{name}} <text>{{detail.house?'是':'不是'}}内部成员</text>
+                </view>
+                <view class="card-title">您的信息已经提交给相关的检查员</view>
+            </view>
+            <view wx:if="{{key=='ncov'}}">
+                <view class="card-time">{{time}}:{{millisecond}}</view>
+                <view class="{{log.pass_type==1||log.pass_type==2||log.pass_type==3?'card-success':'card-no'}}">{{name}}
+					 <text>{{CommunityCheckpointPassTypeEnums[log.pass_type]}}</text>
+                    <text wx:if="{{log.pass_type!=5}}">，{{detail.house?'内部成员':'外部成员'}}</text>
+                </view>
+                <view class="card-title">您的信息已经提交给相关的检查员</view>
+            </view>
+            <view style="color:#888;padding-top:30rpx;padding-left:30rpx;font-size:30rpx">
+                <van-tabs active="{{active}}" bind:change="changeApp" color="#09BA07" type="card">
+                    <van-tab tabClass="tabclass" title="{{key=='ncov'?'畅行茉莉':'桂电畅行'}}健康码"></van-tab>
+                    <van-tab tabClass="tabclass" title="广西健康码"></van-tab>
+                </van-tabs>
+            </view>
+            <view class="code-body">
+                <qrcode bind:change="codeChange" color="{{passable?'#0c0':'#f00'}}" wx:if="{{!active}}"></qrcode>
+                <gxqrcode bind:change="gxqrcodeChange" color="{{quarantine.id?'red':''}}" edit="{{false}}" show="{{show}}" wx:if="{{active}}"></gxqrcode>
+            </view>
+            <view class="flex" wx:if="{{!appshow}}">
+                <view class="flex into">
+                    <view class="block" style="margin-right:8rpx; background-color:#0c0"></view>
+                    <view>可通行</view>
+                </view>
+                <view class="flex into">
+                    <view class="block" style="margin-right:8rpx;background-color:#f90"></view>
+                    <view>限制通行</view>
+                </view>
+                <view class="flex into">
+                    <view class="block" style="margin-right:8rpx;background-color:#f00"></view>
+                    <view>不可通行</view>
+                </view>
+            </view>
+            <view class="card-btn">
+                <van-button plain bind:click="gominiProgram" disabled="{{btndisabled}}" size="large" type="primary" wx:if="{{detail.point.entId}}">提交自治区扫码出入</van-button>
+            </view>
+            <view wx:if="{{detail.use}}">
+                <van-collapse bind:change="onChange" value="{{activeNames}}">
+                    <van-collapse-item name="100" title="">
+                        <view slot="title" style="overflow:hidden">
+                            <van-tag type="success">{{CommunityHouseholdApplicationStateEnums[detail.use.state]}}</van-tag>
+							{{detail.use.group.name}}{{detail.use.household.no}}{{detail.use.name}}
+						</view>
+                        <view style="text-align:left">
+                            <view>{{detail.use.text}}</view>
+                            <text>{{detail.use.desc}}</text>
+                        </view>
+                    </van-collapse-item>
+                </van-collapse>
+            </view>
+        </view>
+    </view>
+</view>
+<van-toast id="van-toast"></van-toast>
+<van-dialog id="van-dialog"></van-dialog>

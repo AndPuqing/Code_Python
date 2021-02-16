@@ -1,0 +1,17 @@
+<view class="phoneLog">
+    <view class="phoneLog-img">
+        <view class="phoneLog-center">
+            <image src="{{userInfo.avatarUrl?userInfo.avatarUrl:self?self.photo:'/static/userinfo.png'}}" style="width:150rpx;height:150rpx;border-radius:50%"></image>
+            <view class="font50" style="color:#666">手机验证</view>
+        </view>
+    </view>
+    <view class="phoneLog-phone">
+        <van-field clearable bind:change="changeUserName" border="{{false}}" placeholder="请输入手机号" type="number" value="{{username}}"></van-field>
+    </view>
+    <view class="phoneLog-btn">
+        <van-button block bind:click="gonext" customClass="demo-margin-bottom" loading="{{loading}}" size="large" type="primary">
+      下一步</van-button>
+    </view>
+    <van-toast id="van-toast"></van-toast>
+</view>
+<van-dialog id="van-dialog"></van-dialog>

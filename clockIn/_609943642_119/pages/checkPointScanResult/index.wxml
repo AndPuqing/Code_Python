@@ -1,0 +1,14 @@
+<view style="position:relative">
+    <checkPointScanResult bind="{{bind}}" bindchange="ResultChange" options="{{options}}" wx:if="{{!show&&!reshow}}"></checkPointScanResult>
+    <checkPointScanResultCode bind="{{bind}}" bindchange="CodeChange" detail="{{detail}}" gid="{{data.group.id}}" log="{{data}}" turnflage="{{turnflage}}" wx:if="{{show}}"></checkPointScanResultCode>
+    <view class="flex btn-bottom">
+        <view class="flex1">
+            <van-button bind:click="goback" customClass="btn" type="default">返回首页</van-button>
+        </view>
+        <view class="flex1">
+            <van-button bind:click="goUrl" customClass="btn" data-url="/pages/passLog/index" type="default">出行记录</van-button>
+        </view>
+    </view>
+</view>
+<van-toast id="van-toast"></van-toast>
+<van-dialog id="van-dialog"></van-dialog>

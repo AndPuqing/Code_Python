@@ -1,0 +1,51 @@
+<view class="container">
+    <view class="flex sign" style="align-items:center">
+        <view class="flex">
+            <image src="{{self.photo}}" style="width:80rpx;height:80rpx;border-radius:50%" wx:if="{{self.photo}}"></image>
+            <view class="sign-icon" wx:else>{{common.nameFilter(self.name)}}</view>
+        </view>
+        <view class="flex1 flex" style="margin-left:16rpx;align-items:center">
+            <view class="sign-title">{{self.name}}</view>
+        </view>
+        <view style="text-align:center">
+			{{time}}
+			<view>{{dayTxt[day]}}</view>
+        </view>
+    </view>
+    <view>
+        <view class="item">
+            <view bindtap="setlog" hoverClass="hover" style="width:250rpx;height:250rpx;background:#2196F3;background-image: #2196F3;color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;text-align: center">
+                <view>打卡
+					<view>{{second}}</view>
+                </view>
+            </view>
+        </view>
+        <view bindtap="toggleSheet" style="text-align:center">{{active.id?active.name:'无可执勤点'}}<text style="color:blue">修改</text>
+        </view>
+    </view>
+</view>
+<view>
+    <view style="font-size:32rpx;color:666;padding:30rpx;border-bottom:1rpx solid #f2f2f2">最近执勤</view>
+    <view class="log" wx:if="{{list.length>0}}">
+        <view class="log-item" wx:for="{{list}}" wx:key="index">
+            <view class="flex1">{{item.group.name}}</view>
+            <view class="flex1" style="font-size:34rpx;color:#666;text-align:right">
+                <view wx:if="{{item.on}}">{{item.on.timeTxt}} 上班打卡</view>
+                <view wx:if="{{item.off}}">{{item.off.timeTxt}} 下班打卡</view>
+            </view>
+        </view>
+    </view>
+</view>
+<van-action-sheet actions="{{actions}}" bind:close="toggleSheet" bind:select="onSelect" closeOnClickOverlay="{{true}}" show="{{sheetshow}}" zIndex="{{10000}}"></van-action-sheet>
+<van-toast id="van-toast"></van-toast>
+<wxs module="common">
+module.exports = ({
+    nameFilter: (function(value) {
+        if (value) {
+            return (value.substring(value.length - 2))
+        } else {
+            return (value)
+        }
+    }),
+});
+</wxs>

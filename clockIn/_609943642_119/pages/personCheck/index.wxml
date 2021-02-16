@@ -1,0 +1,71 @@
+<view class="code" wx:if="{{active.id&&show&&!error}}">
+    <van-cell-group>
+        <van-cell title="当前位置:{{active.name}}" titleWidth="550rpx">
+            <van-button bind:click="toggleSheet" size="mini">切换</van-button>
+        </van-cell>
+    </van-cell-group>
+    <view wx:if="{{log.id&&!overdue}}">
+        <view class="code-head">
+            <view>
+                <userheader url="{{log.user.photo}}"></userheader>
+                <view class="code-head_name">{{log.user.name}}</view>
+                <view class="code-head_health" wx:if="{{healthlog.id}}">
+					{{healthlog.timeTxt}}前身体状态:
+					<healthTags health="{{healthlog.data}}">{{item}}</healthTags>
+                </view>
+            </view>
+        </view>
+        <view class="code-check">
+            <view wx:if="{{passable}}">
+                <van-icon color="rgb(31, 144, 230)" name="checked" size="100rpx"></van-icon>
+            </view>
+            <view wx:if="{{!passable}}">
+                <van-icon color="#e94f4f" name="clear" size="100rpx"></van-icon>
+            </view>
+            <view class="code-check_title">{{!passable?'不许':'允许'}}放行</view>
+            <view class="code-check_subtitle" wx:if="{{!quarantine.id}}">{{passable?'有':'没有'}}相关的通行证</view>
+            <view class="code-check_subtitle" wx:if="{{quarantine.id}}">处于隔离期，隔离至{{quarantine.endTxt}}</view>
+        </view>
+        <view style="margin:0 30rpx;margin-bottom:30rpx" wx:if="{{!(house||parent.type==0)}}">
+            <van-notice-bar leftIcon="volume-o" text="该用户不在本小区或单位，请注意！"></van-notice-bar>
+        </view>
+    </view>
+    <view class="code-check" wx:if="{{overdue}}">
+        <view>
+            <van-icon color="#e94f4f" name="clear" size="100rpx"></van-icon>
+        </view>
+        <view class="code-check_subtitle">二维码已过期，请重新扫码</view>
+    </view>
+    <view style="margin:0 30rpx;" wx:if="{{submitflag||overdue}}">
+        <van-button plain bind:click="scanContinue" size="large" type="info">继续扫码</van-button>
+    </view>
+    <view wx:if="{{log.id&&!submitflag}}">
+        <inputPanel bindchange="inputPanelBack" group="{{group}}" house="{{house}}" inputplate="{{last_plate?last_plate:log.person.plate?log.person.plate:''}}" log="{{log}}" members="{{members}}" parent="{{parent}}" pass="{{use}}" person="{{person}}" point="{{point}}" temp="{log.person.temp}" wx:if="{{log&&group}}"></inputPanel>
+    </view>
+</view>
+<view bindtap="initData" style="background:#fff;margin:30rpx;text-align:center;color:#888;padding:30rpx;border-radius:8rpx" wx:if="{{error}}">
+    <view>
+        <van-icon color="#ff976a" name="warning" size="55rpx"></van-icon>
+    </view>
+    <view>服务器开了小差，点击此处重新加载</view>
+</view>
+<view style="margin-top:100rpx" wx:if="{{!active.id&&show&&!error}}">
+    <view class="code-check">
+        <view>
+            <van-icon color="#ff976a" name="info" size="100rpx"></van-icon>
+        </view>
+        <view class="code-check_title">请勿乱扫他人的通行码</view>
+        <view class="code-check_subtitle">我们非常注重保护用户的隐私，您不是工作人员，我们不会显示相关信息！</view>
+    </view>
+    <view class="flex" style="text-align:center">
+        <view class="flex1">
+            <van-button bindtap="goback" customClass="btn" type="default">返回首页</van-button>
+        </view>
+        <view class="flex1">
+            <van-button bindtap="goPasslog" customClass="btn" type="default">出行记录</van-button>
+        </view>
+    </view>
+</view>
+<van-action-sheet actions="{{groups}}" bind:close="toggleSheet" bind:select="onSelect" closeOnClickOverlay="{{true}}" show="{{sheetshow}}" zIndex="{{10000}}"></van-action-sheet>
+<van-toast id="van-toast"></van-toast>
+<van-dialog id="van-dialog"></van-dialog>

@@ -1,0 +1,35 @@
+<view>
+    <view class="{{scrollTop>30?'filter':'filter1'}}">
+        <van-search bind:change="searchChange" placeholder="请输入搜索关键词"></van-search>
+        <van-dropdown-menu activeColor="#ee0a24">
+            <van-dropdown-item bind:change="menuChange" options="{{option1}}" value="{{value1}}"></van-dropdown-item>
+            <van-dropdown-item bind:change="menuChange2" options="{{option2}}" value="{{value2}}"></van-dropdown-item>
+        </van-dropdown-menu>
+    </view>
+    <view>
+        <view style="{{index>0?'margin-top:30rpx':''}}" wx:for="{{list}}" wx:key="index">
+            <van-panel>
+                <view class="header flex" slot="header">
+                    <view class="title flex1">桂电学生请假申请</view>
+                    <view class="{{!item.state?'state':item.state==1?'success':'reject'}}">{{CommunityLeaveStateEnums[item.state]}}</view>
+                </view>
+                <view style="padding:30rpx">
+                    <view style="font-size:32rpx;color:#666;font-weight:bold">{{item.household_name}} {{item.household_name2}} {{item.user.name}}</view>
+                    <view style="font-size:32rpx;color:#000">{{item.reason}} </view>
+                    <view style="font-size:30rpx;color:#666">{{item.desc}}{{item.imgs.length>0?'(有图片)':''}} </view>
+                    <view style="font-size:30rpx;color:#666">{{item.createdTxt}}申请</view>
+                </view>
+                <view slot="footer" style="text-align:right">
+                    <van-button bindtap="goDetail" customClass="btn" data-id="{{item.id}}" size="small">详情</van-button>
+                    <van-button bind:click="onselect" customClass="btn" data-id="{{item.id}}" data-type="true" size="small" type="primary" wx:if="{{item.state==0}}">通过</van-button>
+                    <van-button bind:click="delete" customClass="btn" data-id="{{item.id}}" data-type="false" data-version="{{item.__version}}" size="small" type="danger" wx:if="{{item.state==1}}">拒绝</van-button>
+                    <van-button bind:click="onselect" customClass="btn" data-id="{{item.id}}" data-type="false" size="small" type="danger" wx:if="{{item.state==0}}">拒绝</van-button>
+                </view>
+            </van-panel>
+        </view>
+    </view>
+    <view bindtap="getMore" style="text-align:center;border-top:1rpx solid #f2f2f2;padding:30rpx;background:#fff" wx:if="{{hasmore}}">加载更多</view>
+    <view style="padding:30rpx;text-align:center" wx:if="{{list.length==0}}">暂无审核数据</view>
+</view>
+<van-dialog id="van-dialog"></van-dialog>
+<van-toast id="van-toast"></van-toast>

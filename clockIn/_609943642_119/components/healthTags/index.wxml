@@ -1,0 +1,3 @@
+<van-tag plain round size="medium" style="{{i>0?'margin-left:20rpx':''}}" wx:for="{{health.tags}}" wx:for-index="i" wx:for-item="v" wx:key="i">{{v}}</van-tag>
+<van-tag plain round size="medium" wx:if="{{health.tags&&health.tags.length==0}}">健康</van-tag>
+<van-tag plain round size="medium" style="margin-left:20rpx" wx:if="{{health.flags>4}}">有接触</van-tag>

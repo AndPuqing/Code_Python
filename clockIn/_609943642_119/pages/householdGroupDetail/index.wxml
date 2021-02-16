@@ -1,0 +1,83 @@
+<view>
+    <view class="title">基本信息</view>
+    <view class="panel">
+        <van-cell-group>
+            <van-cell title="居民区" value="{{detail.name}}"></van-cell>
+            <van-cell isLink title="下级机构" value="{{info.num_building||0}}个"></van-cell>
+            <van-cell isLink bind:click="goUrl" data-url="/pages/householdGroupBuilding/index?id={{detail.id}}" title="楼栋" value="{{info.num_building||0}}个"></van-cell>
+            <van-cell isLink title="通行证种类" value="{{info.num_passcfg||0}}种"></van-cell>
+            <van-cell isLink bind:click="goUrl" data-url="{{info.num_checkpoint?'/pages/householdGroupCheckpoint/index?id='+detail.id:''}}" title="采集监控点" value="{{info.num_checkpoint||0}}个"></van-cell>
+            <van-cell isLink bind:click="goUrl" data-url="/pages/checkPointUser/index?id={{detail.id}}" title="管理员" value="{{usercount||0}}人"></van-cell>
+        </van-cell-group>
+    </view>
+    <view class="title">统计信息</view>
+    <view class="panel">
+        <view>
+            <van-grid border="{{false}}" center="{{true}}" columnNum="3">
+                <van-grid-item>
+                    <view class="text-center" slot="text">
+                        <view>户数</view>
+                        <view style="font-size:32rpx;color:#000">{{info.household_count||0}}</view>
+                        <view>户</view>
+                    </view>
+                </van-grid-item>
+                <van-grid-item>
+                    <view class="text-center" slot="text">
+                        <view>人数</view>
+                        <view style="font-size:32rpx;color:#000">{{info.person_count||0}}</view>
+                        <view>人</view>
+                    </view>
+                </van-grid-item>
+                <van-grid-item>
+                    <view class="text-center" slot="text">
+                        <view>有效通行证</view>
+                        <view style="font-size:32rpx;color:#000">{{info.pass_count||0}}</view>
+                        <view>个</view>
+                    </view>
+                </van-grid-item>
+                <van-grid-item>
+                    <view class="text-center" slot="text">
+                        <view>加入待审核</view>
+                        <view style="font-size:32rpx;color:#000">{{info.apply_in||0}}</view>
+                        <view>人</view>
+                    </view>
+                </van-grid-item>
+                <van-grid-item>
+                    <view class="text-center" slot="text">
+                        <view>通行证待审</view>
+                        <view style="font-size:32rpx;color:#000">{{info.apply_pass||0}}</view>
+                        <view>人</view>
+                    </view>
+                </van-grid-item>
+                <van-grid-item>
+                    <view class="text-center" slot="text">
+                        <view>健康未上报</view>
+                        <view style="font-size:32rpx;color:#000">{{info.health_unreport||0}}</view>
+                        <view>人</view>
+                    </view>
+                </van-grid-item>
+                <van-grid-item>
+                    <view class="text-center" slot="text">
+                        <view>有过接触</view>
+                        <view style="font-size:32rpx;color:#000">{{info.touch||0}}</view>
+                        <view>人</view>
+                    </view>
+                </van-grid-item>
+                <van-grid-item>
+                    <view class="text-center" slot="text">
+                        <view>身体不正常</view>
+                        <view style="font-size:32rpx;color:#000">{{info.sick||0}}</view>
+                        <view>人</view>
+                    </view>
+                </van-grid-item>
+                <van-grid-item>
+                    <view class="text-center" slot="text">
+                        <view>隔离期</view>
+                        <view style="font-size:32rpx;color:#000">{{info.isolat||0}}</view>
+                        <view>人</view>
+                    </view>
+                </van-grid-item>
+            </van-grid>
+        </view>
+    </view>
+</view>

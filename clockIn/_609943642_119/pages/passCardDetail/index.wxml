@@ -1,0 +1,49 @@
+<view style="margin-bottom:160rpx">
+    <view class="title">申请信息</view>
+    <view>
+        <van-cell-group>
+            <van-cell title="持卡人姓名" value="{{detail.user.name}}"></van-cell>
+            <van-cell title="所在组" titleWidth="150rpx" value="{{detail.household.group.name}} {{detail.household.building.name}} {{detail.household.name}}" wx:if="{{detail.household}}"></van-cell>
+            <van-cell title="通行证名称" value="{{detail.name}}"></van-cell>
+            <van-cell title="申请目的" value="{{detail.reason}}" wx:if="{{detail.reason}}"></van-cell>
+            <van-cell title="申请时间" value="{{detail.createdTxt}}"></van-cell>
+            <van-cell title="通行证限制方式" value="{{CommunityPassLimitTypeEnums[detail.limit_type]}}"></van-cell>
+            <van-cell title="审核状态" value="{{CommunityHouseholdApplicationStateEnums[detail.state]}}" valueClass="{{detail.state==1?'success':'danger'}}"></van-cell>
+            <van-cell useLabelSlot title="图片" wx:if="{{detail.imgs.length>0}}">
+                <view slot="label" style="background:#fff">
+                    <image bindtap="previewImg" class="img" data-url="{{item}}" src="{{item}}" wx:for="{{detail.imgs}}" wx:key="index"></image>
+                </view>
+            </van-cell>
+        </van-cell-group>
+    </view>
+    <view class="title">其他信息</view>
+    <view>
+        <van-cell-group>
+            <van-cell title="周期" value="{{detail.limit.cycle}}天" wx:if="{{detail.limit.cycle}}"></van-cell>
+            <van-cell title="周期使用次数" value="{{detail.limit.times}}次" wx:if="{{detail.limit.times}}"></van-cell>
+            <van-cell title="当前剩余次数" value="{{detail.limit.use_times}}次" wx:if="{{detail.limit.use_times}}"></van-cell>
+            <van-cell bindtap="toggleBottomPopup" isLink="{{detail.state==0}}" title="生效时间" value="{{newTime?newTime:detail.limit.startTxt}}" wx:if="{{detail.limit.start}}"></van-cell>
+            <van-cell title="失效时间" value="{{detail.limit.endTxt}}" wx:if="{{detail.limit.end}}"></van-cell>
+            <van-cell title="有效期至" value="{{detail.expiredTxt}}" wx:if="{{detail.expired}}"></van-cell>
+            <van-cell title="有效时间段{{index+1}}" value="{{item.startTxt}}-{{item.endTxt}}" wx:for="{{detail.limit.time_periods}}" wx:key="index"></van-cell>
+            <van-cell title="是否有效" value="{{detail.limit.valid?'可用':'不可用'}}"></van-cell>
+        </van-cell-group>
+    </view>
+    <view class="bottom">
+        <view class="flex1" style="margin-left:30rpx">
+            <van-button bind:click="adiut" data-type="0" size="small" style="margin-right:20rpx" type="primary" wx:if="{{detail.state==0}}">同意</van-button>
+            <van-button bind:click="adiut" data-type="1" size="small" style="margin-right:20rpx" type="danger" wx:if="{{detail.state==0}}">拒绝</van-button>
+            <van-button bind:click="delete" data-type="1" size="small" style="margin-right:20rpx" type="danger" wx:if="{{detail.state==1}}">删除</van-button>
+        </view>
+        <view class="flex1" style="text-align:right">
+            <van-button bind:click="goback" size="small" style="margin-right:20rpx">返回首页</van-button>
+            <van-button bind:click="goUser" size="small" style="margin-right:20rpx" wx:if="{{detail.owner_type==0}}">个人信息</van-button>
+            <van-button bind:click="goHouse" size="small" style="margin-right:20rpx" wx:if="{{detail.owner_type==1}}">家庭信息</van-button>
+        </view>
+    </view>
+</view>
+<van-popup bind:close="toggle" position="bottom" show="{{popShow}}">
+    <van-datetime-picker bind:cancel="toggle" bind:confirm="onTimeChange" minDate="{{mixdate}}" title="请选择日期" type="date" value="{{currentDate1}}"></van-datetime-picker>
+</van-popup>
+<van-toast id="van-toast"></van-toast>
+<van-dialog id="van-dialog"></van-dialog>

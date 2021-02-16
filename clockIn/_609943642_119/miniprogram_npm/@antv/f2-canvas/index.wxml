@@ -1,0 +1,1 @@
+<canvas bindinit="init" bindlongtap="press" bindtouchend="touchEnd" bindtouchmove="touchMove" bindtouchstart="touchStart" canvasId="{{canvasId}}" class="f2-canvas"></canvas>

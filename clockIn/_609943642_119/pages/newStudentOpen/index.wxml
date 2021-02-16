@@ -1,0 +1,7 @@
+<view>
+    <van-cell isLink bind:click="gourl" data-token="{{item.token}}" title="{{item.student_name}}" titleClass="celltile" wx:for="{{list}}" wx:key="index"></van-cell>
+    <view style="font-size:36rpx;padding:50rpx;text-align:center" wx:if="{{list&&list.length==0}}">
+    您不是新生或者还没领取广西健康码,点击<text bindtap="goHealtchcode" style="color:green">领取健康码</text>！
+  </view>
+    <van-toast id="van-toast"></van-toast>
+</view>

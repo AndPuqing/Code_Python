@@ -1,0 +1,31 @@
+<view>
+    <view class="{{scrollTop>30?'filter':'filter1'}}">
+        <van-dropdown-menu activeColor="#ee0a24">
+            <van-dropdown-item bind:change="menuChange" options="{{option1}}" value="{{value1}}"></van-dropdown-item>
+            <van-dropdown-item bind:change="menuChange2" options="{{option2}}" value="{{value2}}"></van-dropdown-item>
+        </van-dropdown-menu>
+    </view>
+    <view>
+        <view style="{{index>0?'margin-top:30rpx':''}}" wx:for="{{list}}" wx:key="index">
+            <van-panel>
+                <view class="header flex" slot="header">
+                    <view class="title flex1">{{item.name}}</view>
+                    <view class="{{!item.state?'state':item.state==1?'success':'reject'}}">{{CommunityHouseholdApplicationStateEnums[item.state]}}</view>
+                </view>
+                <view style="padding:30rpx">
+                    <view style="font-size:32rpx;color:#666;font-weight:bold">{{item.household.group.name}} {{item.household.building.name}} {{item.user.name}}</view>
+                    <view style="font-size:32rpx;color:#000">{{item.reason}} </view>
+                    <view style="font-size:30rpx;color:#666">{{item.text}}{{item.imgs.length>0?'(有图片)':''}} </view>
+                    <view style="font-size:30rpx;color:#666">{{item.groupname}}</view>
+                    <view style="font-size:30rpx;color:#666">{{item.createdTxt}}</view>
+                </view>
+                <view slot="footer" style="text-align:right">
+                    <van-button bindtap="goDetail" customClass="btn" data-id="{{item.id}}" size="small">详情</van-button>
+                </view>
+            </van-panel>
+        </view>
+        <view bindtap="getMore" style="text-align:center;border-top:1rpx solid #f2f2f2;padding:30rpx;background:#fff" wx:if="{{hasmore}}">加载更多</view>
+        <view style="padding:30rpx;text-align:center" wx:if="{{list.length==0}}">暂无数据</view>
+    </view>
+</view>
+<van-toast id="van-toast"></van-toast>

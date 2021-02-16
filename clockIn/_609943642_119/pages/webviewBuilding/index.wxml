@@ -1,0 +1,1 @@
+<web-view src="{{host}}/yqfk/#/building/detail?id={{id}}"></web-view>
